@@ -1,0 +1,60 @@
+@import url("../base/variables.css");
+@import url("../base/reset.css");
+@import url("../base/common.css");
+@import url("../components/header.css");
+@import url("../components/avatar.css");
+@import url("../components/button.css");
+@import url("../components/post-card.css");
+
+.main {
+  padding: 38px 20px 80px;
+}
+
+.board-section {
+  width: 100%;
+  max-width: var(--content-width);
+
+  margin: 0 auto;
+}
+
+.board-introduction {
+  text-align: center;
+}
+
+.board-introduction p {
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+.write-button-wrapper {
+  display: flex;
+  justify-content: flex-end;
+
+  margin-top: 18px;
+  margin-bottom: 18px;
+}
+
+.write-button {
+  width: 138px;
+  height: 46px;
+
+  font-size: 16px;
+}
+
+@media screen and (max-width: 600px) {
+  .main {
+    padding: 34px 16px 60px;
+  }
+
+  .board-introduction p {
+    font-size: 20px;
+  }
+
+  .write-button {
+    width: 116px;
+    height: 42px;
+
+    font-size: 14px;
+  }
+}

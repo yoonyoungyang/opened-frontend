@@ -1,0 +1,67 @@
+.primary-button,
+.login-button,
+.signup-button,
+.edit-button,
+.submit-button {
+  border: none;
+  border-radius: 4px;
+
+  color: var(--color-white);
+  background-color: var(--color-primary-light);
+
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.primary-button:not(:disabled),
+.login-button:not(:disabled),
+.signup-button:not(:disabled),
+.edit-button:not(:disabled),
+.submit-button:not(:disabled) {
+  background-color: var(--color-primary);
+}
+
+.primary-button:disabled,
+.login-button:disabled,
+.signup-button:disabled,
+.edit-button:disabled,
+.submit-button:disabled {
+  background-color: var(--color-primary-light);
+  cursor: default;
+}
+
+.primary-button:hover:not(:disabled),
+.edit-button:hover:not(:disabled),
+.submit-button:hover:not(:disabled) {
+  background-color: var(--color-primary-hover);
+}
+
+.write-button,
+.comment-submit-button {
+  border: none;
+  border-radius: 16px;
+
+  color: var(--color-white);
+  background-color: var(--color-primary-light);
+
+  font-weight: 700;
+}
+
+.write-button:hover,
+.comment-submit-button:hover {
+  background-color: var(--color-primary);
+}
+
+.small-button {
+  min-width: 48px;
+  height: 30px;
+
+  padding: 0 10px;
+
+  border: 1px solid var(--color-primary-light);
+  border-radius: 8px;
+
+  background-color: transparent;
+
+  font-size: 13px;
+}

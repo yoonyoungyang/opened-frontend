@@ -1,0 +1,133 @@
+@import url("../base/variables.css");
+@import url("../base/reset.css");
+@import url("../base/common.css");
+@import url("../components/header.css");
+@import url("../components/avatar.css");
+@import url("../components/button.css");
+@import url("../components/form.css");
+@import url("../components/profile-menu.css");
+@import url("../components/modal.css");
+@import url("../components/toast.css");
+
+.main {
+  padding: 110px 20px 80px;
+}
+
+.profile-edit-section {
+  width: 100%;
+  max-width: var(--form-width);
+
+  margin: 0 auto;
+}
+
+.page-title {
+  margin-bottom: 24px;
+}
+
+.profile-edit-form {
+  width: 100%;
+}
+
+.form-label {
+  margin-bottom: 10px;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.profile-image-group {
+  margin-bottom: 30px;
+}
+
+.profile-label {
+  margin-bottom: 22px;
+}
+
+.profile-image-label {
+  position: relative;
+
+  width: 150px;
+  height: 150px;
+
+  display: block;
+
+  overflow: hidden;
+
+  margin: 0 auto;
+
+  border-radius: 50%;
+
+  cursor: pointer;
+}
+
+.profile-image-preview {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  border-radius: 50%;
+  background-color: #8f8f8f;
+}
+
+.profile-image-overlay {
+  position: absolute;
+  inset: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  color: var(--color-white);
+  background-color: rgba(0, 0, 0, 0.32);
+
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.email-value {
+  min-height: 30px;
+
+  display: flex;
+  align-items: center;
+
+  font-size: 14px;
+}
+
+.nickname-group {
+  margin-bottom: 6px;
+}
+
+.helper-text {
+  margin-top: 4px;
+}
+
+.edit-button {
+  width: 100%;
+  height: 40px;
+}
+
+.withdraw-button {
+  width: 100%;
+  height: 40px;
+
+  border: none;
+
+  background-color: transparent;
+
+  font-size: 14px;
+}
+
+@media screen and (max-width: 600px) {
+  .main {
+    padding: 74px 20px 60px;
+  }
+
+  .profile-image-label {
+    width: 130px;
+    height: 130px;
+  }
+}

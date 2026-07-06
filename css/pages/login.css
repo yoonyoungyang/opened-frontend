@@ -1,0 +1,79 @@
+@import url("../base/variables.css");
+@import url("../base/reset.css");
+@import url("../base/common.css");
+@import url("../components/header.css");
+@import url("../components/button.css");
+@import url("../components/form.css");
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.main {
+  min-height: calc(100vh - var(--header-height));
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding-bottom: 80px;
+}
+
+.login-section {
+  width: 392px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.login-title {
+  margin-bottom: 46px;
+
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.login-form {
+  width: 100%;
+}
+
+.input-group {
+  margin-bottom: 16px;
+}
+
+.helper-text {
+  margin-top: 5px;
+}
+
+.login-button {
+  width: 100%;
+  height: 40px;
+
+  margin-top: 2px;
+}
+
+.signup-link {
+  margin-top: 12px;
+
+  font-size: 14px;
+}
+
+.signup-link:hover {
+  text-decoration: underline;
+}
+
+@media screen and (max-width: 480px) {
+  .main {
+    min-height: calc(100vh - var(--header-height-mobile));
+    padding: 140px 20px 40px;
+  }
+
+  .login-section {
+    width: 100%;
+    max-width: var(--form-width);
+  }
+}
