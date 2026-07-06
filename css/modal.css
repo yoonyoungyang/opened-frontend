@@ -1,0 +1,94 @@
+.hidden {
+  display: none;
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+
+  background-color: rgba(0, 0, 0, 0.35);
+}
+
+.delete-modal {
+  width: 100%;
+  max-width: 408px;
+
+  padding: 44px 40px 40px;
+
+  border-radius: 12px;
+
+  background-color: #ffffff;
+
+  text-align: center;
+}
+
+.delete-modal-title {
+  margin-bottom: 24px;
+
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.delete-modal-description {
+  margin-bottom: 28px;
+
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.delete-modal-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.modal-button {
+  width: 128px;
+  height: 44px;
+
+  border: none;
+  border-radius: 12px;
+
+  font-size: 16px;
+
+  cursor: pointer;
+}
+
+.cancel-button {
+  color: #ffffff;
+  background-color: #242424;
+}
+
+.confirm-button {
+  color: #000000;
+  background-color: #c4a5fa;
+}
+
+@media screen and (max-width: 480px) {
+  .delete-modal {
+    max-width: 360px;
+
+    padding: 36px 24px 32px;
+  }
+
+  .delete-modal-title {
+    font-size: 21px;
+  }
+
+  .delete-modal-description {
+    font-size: 15px;
+  }
+
+  .modal-button {
+    width: 112px;
+  }
+}
