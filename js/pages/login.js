@@ -75,6 +75,7 @@ formEl.addEventListener("submit", function (event) {
       .then((response) => response.json())
       .then((result) => {
         if (result.message === "login_success") {
+          localStorage.setItem("user_id", result.data.user_id);
           window.location.href = "/frontend/pages/posts.html";
         } else {
           helpTxt.innerHTML = "*아이디 또는 비밀번호를 확인해주세요.";
