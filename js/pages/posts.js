@@ -12,3 +12,16 @@ fetch("http://localhost:8080/posts", {
     }
   })
   .finally(() => {});
+
+const userId = localStorage.getItem("user_id");
+
+const createPostBtn = document.querySelector(".write-button");
+function movetoCreate() {
+  if (Number.isNaN(userId) || userId <= 0) {
+    alert("로그인하셔야 합니다."); //리팩토링 필수!!!!!
+  } else {
+    window.location.href = "/frontend/pages/post-create.html";
+  }
+}
+
+createPostBtn.addEventListener("click", movetoCreate);
