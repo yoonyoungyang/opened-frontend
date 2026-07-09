@@ -10,6 +10,11 @@ const commentList = document.querySelector(".comment-list");
 const modal = document.querySelector(".modal-overlay");
 const postDeleteButton = document.querySelector(".post-delete-button");
 
+const backButton = document.querySelector(".back-button");
+backButton.addEventListener("click", function () {
+  window.location.href = `./posts.html`;
+});
+
 let editingCommentId = null;
 
 function formattedDate(createdAt) {
@@ -32,9 +37,6 @@ function postDeleteAction() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        user_id: userId,
-      }),
     })
       .then((response) => response.json())
       .then((result) => {
