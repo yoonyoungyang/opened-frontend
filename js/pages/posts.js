@@ -41,14 +41,13 @@ function loadPosts(posts) {
     const postAuthor = document.createElement("div");
     postAuthor.classList.add("post-author");
 
-    const authorImage = document.createElement("span");
+    const authorImage = document.createElement("img");
     authorImage.classList.add("author-image");
 
     if (post.profile_img) {
-      authorImage.style.backgroundImage = `url(${post.profile_img})`;
+      authorImage.src = post.profile_img;
     } else {
-      authorImage.style.backgroundImage =
-        "url('../assets/default-profile.png')";
+      authorImage.src = "../assets/default-profile.png";
     }
 
     const authorName = document.createElement("span");

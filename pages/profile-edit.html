@@ -24,16 +24,24 @@
           </button>
 
           <!-- 실제 초기 화면에서는 hidden 클래스 유지 -->
-          <nav class="profile-dropdown hidden">
-            <a href="./profile-edit.html" class="profile-dropdown-item">
+          <nav class="profile-dropdown" hidden>
+            <a
+              href="./profile-edit.html"
+              class="profile-dropdown-item edit-user-info"
+            >
               회원정보수정
             </a>
 
-            <a href="./password-edit.html" class="profile-dropdown-item">
+            <a
+              href="./password-edit.html"
+              class="profile-dropdown-item edit-password"
+            >
               비밀번호수정
             </a>
 
-            <a href="./login.html" class="profile-dropdown-item"> 로그아웃 </a>
+            <a href="./login.html" class="profile-dropdown-item logout">
+              로그아웃
+            </a>
           </nav>
         </div>
       </div>
@@ -125,7 +133,7 @@
     </div>
 
     <!-- 수정 성공 또는 실패 토스트 -->
-    <div class="toast-message hidden">수정완료</div>
+    <div class="toast-message" hidden>수정완료</div>
     <script type="module" src="../js/pages/profile-edit.js"></script>
   </body>
 </html>

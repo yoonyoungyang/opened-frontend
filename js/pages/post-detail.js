@@ -155,6 +155,8 @@ function loadComments(comments) {
             .then((result) => {
               writeCommentContent.value = "";
               commentSubmitBtn.disabled = true;
+              commentSubmitBtn.textContent = "댓글 등록";
+
               getComments();
               editingCommentId = null;
             });
