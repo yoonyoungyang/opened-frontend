@@ -17,6 +17,8 @@ let afterProfileImg = null;
 let beforeNickname = null;
 let afterNickname = null;
 
+toastMessage.hidden = true;
+
 if (userId) {
   fetch(`http://localhost:8080/users/me?userId=${userId}`, {
     method: "GET",
@@ -39,24 +41,58 @@ if (userId) {
         nickname.addEventListener("input", function () {
           afterNickname = nickname.value;
         });
+        editButton.addEventListener("click", function () {
+          if (beforeNickname == afterNickname) {
+            // 리팩토링 시 img도 넣어야 됨.
+            alert("변경된 사항이 없습니다."); // 리팩토링 필수!!!!
+          } else {
+            event.preventDefault();
+            fetch(`http://localhost:8080/users/me?userId=${userId}`, {
+              method: "PATCH",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                user_id: userId,
+                nickname: afterNickname,
+                profile_img: afterProfileImg,
+              }),
+            })
+              .then((response) => response.json())
+              .then((result) => {
+                if (result.message === "user_update_success") {
+                  console.log(result);
+                  toastMessage.hidden = false;
+                  requestAnimationFrame(() => {
+                    toastMessage.classList.add("show");
+                  });
 
-        fetch(`http://localhost:8080/users/me?userId=${userId}`, {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            user_id: userId,
-            nickname: afterNickname,
-            profile_img: afterProfileImg,
-          }),
-        })
-          .then((response) => response.json())
-          .then((result) => {
-            console.log(result);
-          });
+                  setTimeout(() => {
+                    toastMessage.classList.remove("show");
+
+                    setTimeout(() => {
+                      toastMessage.hidden = true;
+                      window.location.href = "/frontend/pages/posts.html";
+                    }, 300);
+                  }, 2000);
+                } else {
+                  toastMessage.textContent = "수정 실패";
+                  toastMessage.hidden = false;
+                  requestAnimationFrame(() => {
+                    toastMessage.classList.add("show");
+                  });
+
+                  setTimeout(() => {
+                    toastMessage.classList.remove("show");
+
+                    setTimeout(() => {
+                      toastMessage.hidden = true;
+                    }, 300);
+                  }, 2000);
+                }
+              });
+          }
+        });
       }
     });
-} else {
-  window.location.href = "/frontend/pages/posts.html";
 }
