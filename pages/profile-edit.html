@@ -18,12 +18,16 @@
           <button
             type="button"
             class="profile-menu-button"
-            aria-label="프로필 메뉴"
+            aria-label="프로필 메뉴 열기"
+            aria-expanded="false"
           >
-            <span class="header-profile-image"></span>
+            <img
+              src="../assets/default-profile.png"
+              alt="프로필 이미지"
+              class="header-profile-image"
+            />
           </button>
 
-          <!-- 실제 초기 화면에서는 hidden 클래스 유지 -->
           <nav class="profile-dropdown" hidden>
             <a
               href="./profile-edit.html"
@@ -84,7 +88,7 @@
           </div>
 
           <div class="form-group nickname-group">
-            <label for="nickname" class="form-label"> 닉네임 </label>
+            <label for="nickname" class="form-label">닉네임</label>
 
             <input
               type="text"
@@ -105,7 +109,6 @@
       </section>
     </main>
 
-    <!-- 회원 탈퇴 확인 모달 -->
     <div class="modal-overlay hidden">
       <section
         class="confirm-modal"
@@ -132,8 +135,8 @@
       </section>
     </div>
 
-    <!-- 수정 성공 또는 실패 토스트 -->
     <div class="toast-message" hidden>수정완료</div>
+
     <script type="module" src="../js/pages/profile-edit.js"></script>
   </body>
 </html>

@@ -7,7 +7,6 @@ const editButton = document.querySelector(".edit-button");
 const deleteAccountButton = document.querySelector(".withdraw-button");
 const toastMessage = document.querySelector(".toast-message");
 
-const profileDropdown = document.querySelector(".profile-dropdown");
 const editUserInfoDropdown = document.querySelector(".edit-user-info");
 const editPasswordDropdown = document.querySelector(".edit-password");
 const logoutDropdown = document.querySelector(".logout");
@@ -96,3 +95,15 @@ if (userId) {
       }
     });
 }
+
+const profileMenuButton = document.querySelector(".profile-menu-button");
+const profileDropdown = document.querySelector(".profile-dropdown");
+
+profileMenuButton.addEventListener("click", function () {
+  profileDropdown.hidden = !profileDropdown.hidden;
+
+  profileMenuButton.setAttribute(
+    "aria-expanded",
+    String(!profileDropdown.hidden),
+  );
+});
