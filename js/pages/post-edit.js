@@ -1,4 +1,5 @@
-const userId = localStorage.getItem("user_id");
+import { authenticatedFetch } from "../apis/api";
+
 const titleEl = document.querySelector("#post-title");
 const contentEl = document.querySelector("#post-content");
 const submitButtonEl = document.querySelector(".submit-button");
@@ -22,35 +23,45 @@ let AfterContent = null;
 if (Number.isNaN(postId) || postId <= 0) {
   postError.hidden = false;
   post.hidden = true;
-  commentSection.hidden = true;
 } else {
-  fetch(`http://localhost:8080/posts/${postId}`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
+  fetchPostDetail();
+}
+
+async function fetchPostDetail() {
+  const result = await authenticatedFetch(
+    `http://localhost:8080/posts/${postId}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
     },
-  })
-    .then((response) => response.json())
-    .then((result) => {
-      if (Number(userId) === result.data.user_id) {
-        post.hidden = false;
-        postError.hidden = true;
+  );
+  const token = localStorage.getItem("access_token");
+  if (!token || result.status === 401) {
+    return;
+  }
+  const response = await result.json();
+  if (response.message === "post_detail_success") {
+    if (token) {
+      post.hidden = false;
+      postError.hidden = true;
 
-        BeforeTitle = result.data.title;
-        BeforeContent = result.data.content;
-        AfterTitle = result.data.title;
-        AfterContent = result.data.content;
+      BeforeTitle = result.data.title;
+      BeforeContent = result.data.content;
+      AfterTitle = result.data.title;
+      AfterContent = result.data.content;
 
-        titleEl.value = result.data.title;
-        contentEl.value = result.data.content;
+      titleEl.value = result.data.title;
+      contentEl.value = result.data.content;
 
-        updateHelperText();
-        updateFormState();
-      } else {
-        post.hidden = true;
-        postError.hidden = false;
-      }
-    });
+      updateHelperText();
+      updateFormState();
+    } else {
+      post.hidden = true;
+      postError.hidden = false;
+    }
+  }
 }
 
 function updateHelperText() {
@@ -91,25 +102,32 @@ function updateFormState() {
 formEl.addEventListener("submit", function (event) {
   event.preventDefault();
   if (submitButtonEl.disabled == false) {
-    fetch(`http://localhost:8080/posts/${postId}?UserId=${userId}`, {
+    fetchPostEdit();
+  }
+});
+
+async function fetchPostEdit() {
+  const result = await authenticatedFetch(
+    `http://localhost:8080/posts/${postId}`,
+    {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        user_id: userId,
         title: titleEl.value,
         content: contentEl.value,
       }),
-    })
-      .then((response) => response.json())
-      .then((result) => {
-        if (result.message === "post_edit_success") {
-          console.log(result);
-          window.location.href = `./post-detail.html?postId=${postId}`;
-        } else {
-        }
-      })
-      .finally(() => {});
+    },
+  );
+  const token = localStorage.getItem("access_token");
+  if (!token || result.status === 401) {
+    return;
   }
-});
+  const response = await result.json();
+  if (response.message === "post_edit_success") {
+    console.log(response);
+    window.location.href = `./post-detail.html?postId=${postId}`;
+  } else {
+  }
+}

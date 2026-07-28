@@ -1,9 +1,11 @@
+import { authenticatedFetch } from "../apis/api.js";
+
 const params = new URLSearchParams(window.location.search);
 const postId = Number(params.get("postId"));
 
 const postError = document.querySelector(".post-error");
 const post = document.querySelector(".post");
-const userId = localStorage.getItem("user_id");
+
 const commentSection = document.querySelector(".comment-section");
 const commentList = document.querySelector(".comment-list");
 
@@ -11,14 +13,38 @@ const modal = document.querySelector(".modal-overlay");
 const postDeleteButton = document.querySelector(".post-delete-button");
 
 const backButton = document.querySelector(".back-button");
+
+let editingCommentId = null;
+
+const commentForm = document.querySelector(".comment-form");
+const writeCommentContent = document.querySelector(".comment-input");
+const commentSubmitBtn = document.querySelector(".comment-submit-button");
+
 backButton.addEventListener("click", function () {
   window.location.href = `./posts.html`;
 });
 
-let editingCommentId = null;
-
 function formattedDate(createdAt) {
   return createdAt.slice(0, 19).replace("T", " ");
+}
+
+async function fetchdeletepost() {
+  const response = await authenticatedFetch(
+    `http://localhost:8080/posts/${postId}`,
+    {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    },
+  );
+  if (!response) {
+    return;
+  }
+  const result = await response.json();
+  if (result.message === "post_delete_success") {
+    window.location.href = "/frontend/pages/posts.html";
+  }
 }
 
 function postDeleteAction() {
@@ -31,24 +57,10 @@ function postDeleteAction() {
   confirmText.textContent = "게시글을 삭제하시겠습니까?";
   subConfirmText.textContent = "삭제한 내용은 복구 할 수 없습니다.";
 
-  function deleteConfirm() {
-    fetch(`http://localhost:8080/posts/${postId}?userId=${userId}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => response.json())
-      .then((result) => {
-        if (result.message === "post_delete_success") {
-          window.location.href = "/frontend/pages/posts.html";
-        }
-      });
-  }
-
   cancelButton.addEventListener("click", () => (modal.hidden = true));
-  confirmButton.addEventListener("click", deleteConfirm);
+  confirmButton.addEventListener("click", fetchdeletepost);
 }
+
 function replacetoEditPage() {
   return (window.location.href = `/frontend/pages/post-edit.html?postId=${postId}`);
 }
@@ -57,7 +69,21 @@ postDeleteButton.addEventListener("click", postDeleteAction);
 const postEditButton = document.querySelector(".post-edit-button");
 postEditButton.addEventListener("click", replacetoEditPage);
 
-const writeCommentContent = document.querySelector(".comment-input");
+commentForm.addEventListener("submit", async function (event) {
+  event.preventDefault();
+
+  const content = writeCommentContent.value.trim();
+
+  if (!content) {
+    return;
+  }
+
+  if (editingCommentId === null) {
+    await fetchCreateComment();
+  } else {
+    await fetchEditComment(editingCommentId);
+  }
+});
 
 function loadComments(comments) {
   commentList.replaceChildren();
@@ -116,61 +142,32 @@ function loadComments(comments) {
     const commentId = comment.comment_id;
 
     function commentEditButton() {
-      if (Number(userId) == comment.user_id) {
+      editingCommentId = comment.comment_id;
+
+      writeCommentContent.value = comment.content.trim();
+      commentSubmitBtn.textContent = "댓글 수정";
+      commentSubmitBtn.disabled = false;
+
+      if (token) {
+        //재확인
         editingCommentId = comment.comment_id;
 
         const beforeCommentContent = comment.content;
         let AfterCommentContent = "";
-        const commentSubmitBtn = document.querySelector(
-          ".comment-submit-button",
-        );
 
         commentSubmitBtn.disabled = false;
 
-        writeCommentContent.value = comment.content;
+        writeCommentContent.value = comment.content.trim();
         commentSubmitBtn.textContent = "댓글 수정";
 
-        const commentForm = document.querySelector(".comment-form");
-
         writeCommentContent.addEventListener("input", function () {
-          AfterCommentContent = writeCommentContent.value;
+          AfterCommentContent = writeCommentContent.value.trim();
         });
 
         function commentEditSubmit() {
           commentSubmitBtn.disabled = true;
-          fetch(
-            `http://localhost:8080/posts/${postId}/comments/${commentId}?userId=${userId}`,
-            {
-              method: "PATCH",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                user_id: userId,
-                content: writeCommentContent.value,
-              }),
-            },
-          )
-            .then((response) => response.json())
-            .then((result) => {
-              writeCommentContent.value = "";
-              commentSubmitBtn.disabled = true;
-              commentSubmitBtn.textContent = "댓글 등록";
-
-              getComments();
-              editingCommentId = null;
-            });
+          fetchEditComment();
         }
-
-        commentForm.addEventListener("submit", function (event) {
-          event.preventDefault();
-          if (writeCommentContent.value) {
-            commentEditSubmit();
-          } else {
-            commentSubmitBtn.disabled = true;
-            writeCommentContent.value = "";
-          }
-        });
       } else {
         alert("작성자가 다릅니다."); // 리팩토링 필요, 확인 필요!!
       }
@@ -179,7 +176,8 @@ function loadComments(comments) {
     editButton.addEventListener("click", commentEditButton);
 
     function commentDeleteAction() {
-      if (Number(userId) === comment.user_id) {
+      if (token) {
+        //재확인
         modal.hidden = false;
         const cancelButton = document.querySelector(".cancel-button");
         const confirmButton = document.querySelector(".confirm-button");
@@ -191,27 +189,10 @@ function loadComments(comments) {
         confirmText.textContent = "댓글을 삭제하시겠습니까?";
         subConfirmText.textContent = "삭제한 내용은 복구 할 수 없습니다.";
 
-        function deleteConfirm() {
-          fetch(
-            `http://localhost:8080/posts/${postId}/comments/${commentId}?userId=${userId}`,
-            {
-              method: "DELETE",
-              headers: {
-                "Content-Type": "application/json",
-              },
-            },
-          )
-            .then((response) => response.json())
-            .then((result) => {
-              if (result.message === "comment_delete_success") {
-                modal.hidden = true;
-                getComments();
-              }
-            });
-        }
-
         cancelButton.addEventListener("click", () => (modal.hidden = true));
-        confirmButton.addEventListener("click", deleteConfirm);
+        confirmButton.addEventListener("click", () =>
+          fetchDeleteComment(commentId),
+        );
       } else {
         alert("작성자가 다릅니다."); //이것도 리팩토링 필수
       }
@@ -229,125 +210,179 @@ function loadComments(comments) {
   });
 }
 
-function getComments() {
-  fetch(`http://localhost:8080/posts/${postId}/comments`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  })
-    .then((response) => response.json())
-    .then((result) => {
-      console.log(result);
-
-      if (result.message === "comment_list_success") {
-        loadComments(result.data);
-      }
-    });
-}
-
 function getCommentSection() {
-  const commentSubmitBtn = document.querySelector(".comment-submit-button");
-  const commentForm = document.querySelector(".comment-form");
-
-  writeCommentContent.addEventListener(
-    "input",
-    function () {
-      if (writeCommentContent.value.trim() == "") {
-        commentSubmitBtn.disabled = true;
-      } else {
-        commentSubmitBtn.disabled = false;
-      }
-    },
-    getComments(),
-  );
+  writeCommentContent.addEventListener("input", function () {
+    if (writeCommentContent.value.trim() == "") {
+      commentSubmitBtn.disabled = true;
+    } else {
+      commentSubmitBtn.disabled = false;
+    }
+  });
 
   commentForm.addEventListener("submit", function (event) {
     event.preventDefault();
-    if (writeCommentContent.value && editingCommentId === null) {
+    if (writeCommentContent.value.trim() && editingCommentId === null) {
       commentSubmitBtn.disabled = true;
-      fetch(`http://localhost:8080/posts/${postId}/comments`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          user_id: userId,
-          content: writeCommentContent.value,
-        }),
-      })
-        .then((response) => response.json())
-        .then((result) => {
-          writeCommentContent.value = "";
-          commentSubmitBtn.disabled = true;
-          getComments();
-        });
-    } else {
+      fetchCreateComment();
     }
   });
 }
-
 if (Number.isNaN(postId) || postId <= 0) {
   postError.hidden = false;
   post.hidden = true;
   commentSection.hidden = true;
 } else {
-  fetch(`http://localhost:8080/posts/${postId}`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  })
-    .then((response) => response.json())
-    .then((result) => {
-      if (result.message === "post_detail_success") {
-        postError.hidden = true;
-        post.hidden = false;
-        commentSection.hidden = false;
-        console.log("성공 분기 실행");
-        console.log(postError.hidden);
-        const postTitle = document.querySelector(".post-title");
-        const postContent = document.querySelector(".post-text");
-        const likeCount = document.querySelector("#like-count");
-        const viewCount = document.querySelector("#view-count");
-        const commentCount = document.querySelector("#comment-count");
-        const postDate = document.querySelector(".post-date");
-        const authorNickname = document.querySelector(".author-name");
-        const authorImg = document.querySelector(".author-image");
+  fetchPostDetail();
+}
 
-        const createdAt = result.data.created_at;
-        const replaceDate = formattedDate(createdAt);
+async function fetchPostDetail() {
+  try {
+    const response = await authenticatedFetch(
+      `http://localhost:8080/posts/${postId}`,
+      {
+        method: "GET",
+      },
+    );
+    if (!response) {
+      return;
+    }
+    const result = await response.json();
+    if (result.message === "post_detail_success") {
+      postError.hidden = true;
+      post.hidden = false;
+      commentSection.hidden = false;
+      console.log("성공 분기 실행");
+      console.log(postError.hidden);
+      const postTitle = document.querySelector(".post-title");
+      const postContent = document.querySelector(".post-text");
+      const likeCount = document.querySelector("#like-count");
+      const viewCount = document.querySelector("#view-count");
+      const commentCount = document.querySelector("#comment-count");
+      const postDate = document.querySelector(".post-date");
+      const authorNickname = document.querySelector(".author-name");
+      const authorImg = document.querySelector(".author-image");
 
-        postTitle.textContent = result.data.title;
-        postContent.textContent = result.data.content;
-        likeCount.textContent = result.data.like_count;
-        viewCount.textContent = result.data.view_count;
-        commentCount.textContent = result.data.comment_count;
-        postDate.textContent = replaceDate;
-        authorNickname.textContent = result.data.nickname;
-        if (result.data.profile_img) {
-          authorImg.style.backgroundImage = `url(${result.data.profile_img})`;
-        } else {
-          authorImg.style.backgroundImage =
-            "url('../assets/default-profile.png')";
-        }
+      const createdAt = result.data.created_at;
+      const replaceDate = formattedDate(createdAt);
 
-        if (Number(userId) !== result.data.user_id) {
-          postDeleteButton.disabled = true;
-        }
-
-        getCommentSection();
+      postTitle.textContent = result.data.title;
+      postContent.textContent = result.data.content;
+      likeCount.textContent = result.data.like_count;
+      viewCount.textContent = result.data.view_count;
+      commentCount.textContent = result.data.comment_count;
+      postDate.textContent = replaceDate;
+      authorNickname.textContent = result.data.nickname;
+      if (result.data.profile_img) {
+        authorImg.style.backgroundImage = `url(${result.data.profile_img})`;
       } else {
-        console.error(postError);
-        postError.hidden = false;
-        post.hidden = true;
-        commentSection.hidden = true;
+        authorImg.style.backgroundImage =
+          "url('../assets/default-profile.png')";
       }
-    })
-    .catch((error) => {
+
+      if (!result.data.is_mine) {
+        //재확인!!!!!!!!
+        postDeleteButton.disabled = true;
+      }
+
+      getCommentSection();
+      fetchCommentsList();
+    } else {
+      console.error(postError);
       postError.hidden = false;
       post.hidden = true;
       commentSection.hidden = true;
-    })
-    .finally(() => {});
+    }
+  } catch (error) {
+    postError.hidden = false;
+    post.hidden = true;
+    commentSection.hidden = true;
+  }
+}
+
+async function fetchCreateComment() {
+  const response = await authenticatedFetch(
+    `http://localhost:8080/posts/${postId}/comments`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        content: writeCommentContent.value.trim(),
+      }),
+    },
+  );
+  if (!response) {
+    return;
+  }
+  const result = await response.json();
+  if (result.message === "comment_create_success") {
+    writeCommentContent.value = "";
+    commentSubmitBtn.disabled = true;
+    fetchCommentsList();
+  }
+}
+async function fetchEditComment(commentId) {
+  const response = await authenticatedFetch(
+    `http://localhost:8080/posts/${postId}/comments/${commentId}`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        content: writeCommentContent.value,
+      }),
+    },
+  );
+  if (!response) {
+    return;
+  }
+  const result = await response.json();
+  if (result.message === "comment_edit_success") {
+    writeCommentContent.value = "";
+    commentSubmitBtn.disabled = true;
+    commentSubmitBtn.textContent = "댓글 등록";
+
+    fetchCommentsList();
+    editingCommentId = null;
+  }
+}
+async function fetchDeleteComment(commentId) {
+  const response = await authenticatedFetch(
+    `http://localhost:8080/posts/${postId}/comments/${commentId}`,
+    {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    },
+  );
+  if (!response) {
+    return;
+  }
+  const result = await response.json();
+  if (result.message === "comment_delete_success") {
+    modal.hidden = true;
+    fetchCommentsList();
+  }
+}
+
+async function fetchCommentsList() {
+  const response = await authenticatedFetch(
+    `http://localhost:8080/posts/${postId}/comments`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    },
+  );
+  if (!response) {
+    return;
+  }
+  const result = await response.json();
+  if (result.message === "comment_list_success") {
+    loadComments(result.data);
+  }
 }

@@ -1,4 +1,5 @@
-const userId = localStorage.getItem("user_id");
+import { authenticatedFetch } from "../apis/api.js";
+
 const postListEl = document.querySelector(".post-list");
 
 function formattedDate(createdAt) {
@@ -69,29 +70,38 @@ function loadPosts(posts) {
   });
 }
 
-fetch("http://localhost:8080/posts", {
-  method: "GET",
-  headers: {
-    "Content-Type": "application/json",
-  },
-})
-  .then((response) => response.json())
-  .then((result) => {
+async function fetchPosts() {
+  try {
+    const response = await authenticatedFetch("http://localhost:8080/posts", {
+      method: "GET",
+    });
+    const token = localStorage.getItem("access_token");
+    if (!token || response.status === 401) {
+      return;
+    }
+    const result = await response.json();
     if (result.message === "post_list_success") {
       console.log(result);
       loadPosts(result.data);
-    } else {
     }
-  })
-  .finally(() => {});
+  } catch (error) {
+    console.error(error);
+    alert("서버 연결에 실패했습니다.");
+  }
+}
+
+fetchPosts();
 
 const createPostBtn = document.querySelector(".write-button");
+
 function movetoCreate() {
-  if (Number.isNaN(userId) || userId <= 0) {
-    alert("로그인하셔야 합니다."); //리팩토링 필수!!!!!
-  } else {
-    window.location.href = "/frontend/pages/post-create.html";
+  const token = localStorage.getItem("access_token");
+  if (!token) {
+    alert("로그인하셔야 합니다.");
+    window.location.href = "/frontend/pages/login.html";
+    return;
   }
+  window.location.href = "/frontend/pages/post-create.html";
 }
 
 createPostBtn.addEventListener("click", movetoCreate);

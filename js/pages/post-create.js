@@ -1,4 +1,5 @@
-const userId = localStorage.getItem("user_id");
+import { authenticatedFetch } from "../apis/api.js";
+
 const titleEl = document.querySelector("#post-title");
 const contentEl = document.querySelector("#post-content");
 const submitButtonEl = document.querySelector(".submit-button");
@@ -29,26 +30,27 @@ function updateFormState() {
 formEl.addEventListener("submit", function (event) {
   event.preventDefault();
   if (submitButtonEl.disabled == false) {
-    fetch("http://localhost:8080/posts", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        user_id: userId,
-        title: titleEl.value,
-        content: contentEl.value,
-      }),
-    })
-      .then((response) => response.json())
-      .then((result) => {
-        if (result.message === "post_create_success") {
-          console.log(result);
-          const postId = result.data.post_id;
-          window.location.href = `./post-detail.html?postId=${postId}`;
-        } else {
-        }
-      })
-      .finally(() => {});
+    fetchCreatePost();
   }
 });
+
+async function fetchCreatePost() {
+  const result = await authenticatedFetch("http://localhost:8080/posts", {
+    method: "POST",
+    body: JSON.stringify({
+      title: titleEl.value,
+      content: contentEl.value,
+    }),
+  });
+  const token = localStorage.getItem("access_token");
+  if (!token || result.status === 401) {
+    return;
+  }
+  const response = await result.json();
+
+  if (response.message === "post_create_success") {
+    console.log(response);
+    const postId = result.data.post_id;
+    window.location.href = `./post-detail.html?postId=${postId}`;
+  }
+}
