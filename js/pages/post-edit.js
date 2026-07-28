@@ -1,4 +1,4 @@
-import { authenticatedFetch } from "../apis/api";
+import { authenticatedFetch } from "../apis/api.js";
 
 const titleEl = document.querySelector("#post-title");
 const contentEl = document.querySelector("#post-content");
@@ -37,23 +37,22 @@ async function fetchPostDetail() {
       },
     },
   );
-  const token = localStorage.getItem("access_token");
-  if (!token || result.status === 401) {
+  if (!result) {
     return;
   }
   const response = await result.json();
   if (response.message === "post_detail_success") {
-    if (token) {
+    if (response.data.is_mine) {
       post.hidden = false;
       postError.hidden = true;
 
-      BeforeTitle = result.data.title;
-      BeforeContent = result.data.content;
-      AfterTitle = result.data.title;
-      AfterContent = result.data.content;
+      BeforeTitle = response.data.title;
+      BeforeContent = response.data.content;
+      AfterTitle = response.data.title;
+      AfterContent = response.data.content;
 
-      titleEl.value = result.data.title;
-      contentEl.value = result.data.content;
+      titleEl.value = response.data.title;
+      contentEl.value = response.data.content;
 
       updateHelperText();
       updateFormState();
@@ -120,8 +119,7 @@ async function fetchPostEdit() {
       }),
     },
   );
-  const token = localStorage.getItem("access_token");
-  if (!token || result.status === 401) {
+  if (!result) {
     return;
   }
   const response = await result.json();

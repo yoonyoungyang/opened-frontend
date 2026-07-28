@@ -65,9 +65,7 @@ function replacetoEditPage() {
   return (window.location.href = `/frontend/pages/post-edit.html?postId=${postId}`);
 }
 
-postDeleteButton.addEventListener("click", postDeleteAction);
 const postEditButton = document.querySelector(".post-edit-button");
-postEditButton.addEventListener("click", replacetoEditPage);
 
 commentForm.addEventListener("submit", async function (event) {
   event.preventDefault();
@@ -138,8 +136,14 @@ function loadComments(comments) {
     deleteButton.classList.add("small-button");
     deleteButton.textContent = "삭제";
 
-    commentButtons.append(editButton, deleteButton);
     const commentId = comment.comment_id;
+
+    if (comment.is_mine) {
+      commentButtons.append(editButton, deleteButton);
+
+      editButton.addEventListener("click", commentEditButton);
+      deleteButton.addEventListener("click", commentDeleteAction);
+    }
 
     function commentEditButton() {
       editingCommentId = comment.comment_id;
@@ -147,83 +151,45 @@ function loadComments(comments) {
       writeCommentContent.value = comment.content.trim();
       commentSubmitBtn.textContent = "댓글 수정";
       commentSubmitBtn.disabled = false;
-
-      if (token) {
-        //재확인
-        editingCommentId = comment.comment_id;
-
-        const beforeCommentContent = comment.content;
-        let AfterCommentContent = "";
-
-        commentSubmitBtn.disabled = false;
-
-        writeCommentContent.value = comment.content.trim();
-        commentSubmitBtn.textContent = "댓글 수정";
-
-        writeCommentContent.addEventListener("input", function () {
-          AfterCommentContent = writeCommentContent.value.trim();
-        });
-
-        function commentEditSubmit() {
-          commentSubmitBtn.disabled = true;
-          fetchEditComment();
-        }
-      } else {
-        alert("작성자가 다릅니다."); // 리팩토링 필요, 확인 필요!!
-      }
     }
-
-    editButton.addEventListener("click", commentEditButton);
 
     function commentDeleteAction() {
-      if (token) {
-        //재확인
-        modal.hidden = false;
-        const cancelButton = document.querySelector(".cancel-button");
-        const confirmButton = document.querySelector(".confirm-button");
-        const confirmText = document.querySelector(".delete-modal-title");
-        const subConfirmText = document.querySelector(
-          ".delete-modal-description",
-        );
+      modal.hidden = false;
+      const cancelButton = document.querySelector(".cancel-button");
+      const confirmButton = document.querySelector(".confirm-button");
+      const confirmText = document.querySelector(".delete-modal-title");
+      const subConfirmText = document.querySelector(
+        ".delete-modal-description",
+      );
 
-        confirmText.textContent = "댓글을 삭제하시겠습니까?";
-        subConfirmText.textContent = "삭제한 내용은 복구 할 수 없습니다.";
+      confirmText.textContent = "댓글을 삭제하시겠습니까?";
+      subConfirmText.textContent = "삭제한 내용은 복구 할 수 없습니다.";
 
-        cancelButton.addEventListener("click", () => (modal.hidden = true));
-        confirmButton.addEventListener("click", () =>
-          fetchDeleteComment(commentId),
-        );
-      } else {
-        alert("작성자가 다릅니다."); //이것도 리팩토링 필수
-      }
+      cancelButton.addEventListener("click", () => (modal.hidden = true));
+      confirmButton.addEventListener("click", () =>
+        fetchDeleteComment(commentId),
+      );
     }
-
-    deleteButton.addEventListener("click", commentDeleteAction);
 
     authorRow.append(authorName, commentDate);
     authorText.append(authorRow, commentContent);
     authorInformation.append(authorImage, authorText);
 
-    commentTop.append(authorInformation, commentButtons);
+    commentTop.append(authorInformation);
+    if (comment.is_mine) {
+      commentTop.append(commentButtons);
+    }
     commentItem.append(commentTop);
     commentList.append(commentItem);
   });
 }
 
-function getCommentSection() {
+function commentSubmitBtnAbled() {
   writeCommentContent.addEventListener("input", function () {
     if (writeCommentContent.value.trim() == "") {
       commentSubmitBtn.disabled = true;
     } else {
       commentSubmitBtn.disabled = false;
-    }
-  });
-
-  commentForm.addEventListener("submit", function (event) {
-    event.preventDefault();
-    if (writeCommentContent.value.trim() && editingCommentId === null) {
-      commentSubmitBtn.disabled = true;
-      fetchCreateComment();
     }
   });
 }
@@ -280,11 +246,16 @@ async function fetchPostDetail() {
       }
 
       if (!result.data.is_mine) {
-        //재확인!!!!!!!!
+        postEditButton.disabled = true;
         postDeleteButton.disabled = true;
+      } else {
+        postEditButton.disabled = false;
+        postDeleteButton.disabled = false;
+        postEditButton.addEventListener("click", replacetoEditPage);
+        postDeleteButton.addEventListener("click", postDeleteAction);
       }
 
-      getCommentSection();
+      commentSubmitBtnAbled();
       fetchCommentsList();
     } else {
       console.error(postError);
@@ -331,7 +302,7 @@ async function fetchEditComment(commentId) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        content: writeCommentContent.value,
+        content: writeCommentContent.value.trim(),
       }),
     },
   );
@@ -373,9 +344,6 @@ async function fetchCommentsList() {
     `http://localhost:8080/posts/${postId}/comments`,
     {
       method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
     },
   );
   if (!response) {
@@ -383,6 +351,9 @@ async function fetchCommentsList() {
   }
   const result = await response.json();
   if (result.message === "comment_list_success") {
-    loadComments(result.data);
+    loadComments(result.data.comments);
+
+    const commentCount = document.querySelector("#comment-count");
+    commentCount.textContent = result.data.total_count;
   }
 }

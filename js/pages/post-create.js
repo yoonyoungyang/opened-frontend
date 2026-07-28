@@ -37,13 +37,16 @@ formEl.addEventListener("submit", function (event) {
 async function fetchCreatePost() {
   const result = await authenticatedFetch("http://localhost:8080/posts", {
     method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+
     body: JSON.stringify({
       title: titleEl.value,
       content: contentEl.value,
     }),
   });
-  const token = localStorage.getItem("access_token");
-  if (!token || result.status === 401) {
+  if (!result) {
     return;
   }
   const response = await result.json();

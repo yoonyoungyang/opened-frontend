@@ -78,9 +78,9 @@ function validateNickname(formNickname, showEmptyMessage) {
   const nickHelpTxt = document.querySelector(".nickname-helper-text");
   if (currentNickname == "") {
     if (showEmptyMessage) {
-      emailHelperTxt.textContent = "닉네임을 입력해주세요.";
+      nickHelpTxt.textContent = "닉네임을 입력해주세요.";
     } else {
-      emailHelperTxt.textContent = "";
+      nickHelpTxt.textContent = "";
     }
     return false;
   } else if (currentNickname.length > 10) {

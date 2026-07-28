@@ -16,6 +16,11 @@ export async function authenticatedFetch(url, options = {}) {
 
   const response = await fetch(url, requestOptions);
 
+  if (!response.ok) {
+    console.error("요청 실패:", response.status);
+    return;
+  }
+
   if (response.status === 401) {
     localStorage.removeItem("access_token");
     window.location.href = "/frontend/pages/login.html";

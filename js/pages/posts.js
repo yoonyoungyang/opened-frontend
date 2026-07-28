@@ -70,27 +70,26 @@ function loadPosts(posts) {
   });
 }
 
-async function fetchPosts() {
-  try {
-    const response = await authenticatedFetch("http://localhost:8080/posts", {
-      method: "GET",
-    });
-    const token = localStorage.getItem("access_token");
-    if (!token || response.status === 401) {
-      return;
+fetch("http://localhost:8080/posts", {
+  method: "GET",
+})
+  .then((response) => {
+    if (!response.ok) {
+      throw new Error(`게시글 조회 실패: ${response.status}`);
     }
-    const result = await response.json();
+
+    return response.json();
+  })
+  .then((result) => {
     if (result.message === "post_list_success") {
       console.log(result);
       loadPosts(result.data);
     }
-  } catch (error) {
+  })
+  .catch((error) => {
     console.error(error);
     alert("서버 연결에 실패했습니다.");
-  }
-}
-
-fetchPosts();
+  });
 
 const createPostBtn = document.querySelector(".write-button");
 
