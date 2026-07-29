@@ -10,23 +10,12 @@
   </head>
 
   <body>
-    <header class="header">
-      <div class="header-inner">
-        <button
-          type="button"
-          class="back-button"
-          aria-label="이전 페이지로 돌아가기"
-        >
-          ‹
-        </button>
-
-        <h1 class="header-title">아무 말 대잔치</h1>
-
-        <button type="button" class="profile-button" aria-label="프로필 메뉴">
-          <span class="profile-image"></span>
-        </button>
-      </div>
-    </header>
+    <div
+      data-header
+      data-back="true"
+      data-back-label="이전 페이지로 돌아가기"
+      data-profile="button"
+    ></div>
 
     <main class="main">
       <section class="post-error" aria-live="polite" hidden>

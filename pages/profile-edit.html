@@ -10,46 +10,10 @@
   </head>
 
   <body>
-    <header class="header">
-      <div class="header-inner">
-        <h1 class="header-title">아무 말 대잔치</h1>
-
-        <div class="profile-menu">
-          <button
-            type="button"
-            class="profile-menu-button"
-            aria-label="프로필 메뉴 열기"
-            aria-expanded="false"
-          >
-            <img
-              src="../assets/default-profile.png"
-              alt="프로필 이미지"
-              class="header-profile-image"
-            />
-          </button>
-
-          <nav class="profile-dropdown" hidden>
-            <a
-              href="./profile-edit.html"
-              class="profile-dropdown-item edit-user-info"
-            >
-              회원정보수정
-            </a>
-
-            <a
-              href="./password-edit.html"
-              class="profile-dropdown-item edit-password"
-            >
-              비밀번호수정
-            </a>
-
-            <a href="./login.html" class="profile-dropdown-item logout">
-              로그아웃
-            </a>
-          </nav>
-        </div>
-      </div>
-    </header>
+    <div
+      data-header
+      data-profile="menu"
+    ></div>
 
     <main class="main">
       <section class="profile-edit-section">
