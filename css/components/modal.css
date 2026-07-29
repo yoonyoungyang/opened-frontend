@@ -63,12 +63,12 @@
 
 .cancel-button {
   color: var(--color-white);
-  background-color: #242424;
+  background-color: var(--color-black);
 }
 
 .confirm-button {
-  color: var(--color-black);
-  background-color: #c4a5fa;
+  color: var(--color-white);
+  background-color: var(--color-primary);
 }
 
 @media screen and (max-width: 480px) {

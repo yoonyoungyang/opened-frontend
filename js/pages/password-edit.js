@@ -1,5 +1,3 @@
-const userId = localStorage.getItem("user_id");
-
 const formEl = document.querySelector(".password-edit-form");
 
 const formPw = document.querySelector("#password");
@@ -96,7 +94,6 @@ formEl.addEventListener("submit", function (event) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        user_id: userId,
         current_password: formPw.value.trim(),
         new_password: formPw.value.trim(),
       }),

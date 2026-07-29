@@ -43,7 +43,7 @@
 .nickname-input:focus,
 .title-input:focus,
 .content-input:focus {
-  border-color: var(--color-primary);
+  border-color: var(--color-secondary);
 }
 
 .helper-text,
@@ -85,10 +85,11 @@
 
   padding: 0 12px;
 
-  border: 1px solid var(--color-muted);
+  border: 1px solid var(--color-secondary);
   border-radius: 3px;
 
-  background-color: #eeeeee;
+  color: var(--color-secondary);
+  background-color: var(--color-white);
 
   font-size: 13px;
 
@@ -96,7 +97,7 @@
 }
 
 .file-button:hover {
-  background-color: #e2e2e2;
+  background-color: #f5f7ff;
 }
 
 .file-name {

@@ -16,14 +16,15 @@ export async function authenticatedFetch(url, options = {}) {
 
   const response = await fetch(url, requestOptions);
 
-  if (!response.ok) {
-    console.error("요청 실패:", response.status);
+  if (response.status === 401 || response.status === 403) {
+    localStorage.removeItem("access_token");
+    window.location.href = "/frontend/pages/login.html";
+    console.log(response);
     return;
   }
 
-  if (response.status === 401) {
-    localStorage.removeItem("access_token");
-    window.location.href = "/frontend/pages/login.html";
+  if (!response.ok) {
+    console.error("요청 실패:", response.status);
     return;
   }
 

@@ -2,7 +2,10 @@
   width: 100%;
   height: var(--header-height);
 
-  border-bottom: 1px solid var(--color-black);
+  border-bottom: 1px solid #3c3c42;
+
+  color: var(--color-white);
+  background-color: #29292d;
 }
 
 .header-inner {
@@ -20,7 +23,7 @@
 }
 
 .header-title {
-  font-size: 32px;
+  font-size: 27px;
   font-weight: 400;
   line-height: 1;
 }
@@ -37,9 +40,10 @@
   justify-content: center;
 
   border: none;
+  color: var(--color-white);
   background-color: transparent;
 
-  font-size: 44px;
+  font-size: 38px;
   font-weight: 300;
   line-height: 1;
 }
@@ -50,7 +54,7 @@
   }
 
   .header-title {
-    font-size: 24px;
+    font-size: 21px;
   }
 
   .back-button {
@@ -59,6 +63,6 @@
     width: 34px;
     height: 34px;
 
-    font-size: 38px;
+    font-size: 32px;
   }
 }

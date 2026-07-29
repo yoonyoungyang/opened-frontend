@@ -70,7 +70,9 @@
 
   object-fit: cover;
 
-  background-color: #8f8f8f;
+  border: 1px solid var(--color-border);
+
+  background-color: var(--color-white);
 }
 
 .profile-image-overlay {
@@ -152,7 +154,7 @@
 
   object-fit: cover;
 
-  background-color: #8f8f8f;
+  background-color: var(--color-white);
 }
 
 /* hidden 속성이 있을 때 드롭다운 숨김 */

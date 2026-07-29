@@ -26,7 +26,10 @@
 .signup-button:disabled,
 .edit-button:disabled,
 .submit-button:disabled {
-  background-color: var(--color-primary-light);
+  color: #9a9a9f;
+  background-color: var(--color-white);
+
+  border: 1px solid var(--color-border);
   cursor: default;
 }
 
@@ -42,14 +45,14 @@
   border-radius: 16px;
 
   color: var(--color-white);
-  background-color: var(--color-primary-light);
+  background-color: var(--color-primary);
 
   font-weight: 700;
 }
 
 .write-button:hover,
 .comment-submit-button:hover {
-  background-color: var(--color-primary);
+  background-color: var(--color-primary-hover);
 }
 
 .small-button {
@@ -58,10 +61,11 @@
 
   padding: 0 10px;
 
-  border: 1px solid var(--color-primary-light);
+  border: 1px solid var(--color-secondary);
   border-radius: 8px;
 
-  background-color: transparent;
+  color: var(--color-secondary);
+  background-color: var(--color-white);
 
   font-size: 13px;
 }

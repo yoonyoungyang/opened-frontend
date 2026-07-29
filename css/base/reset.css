@@ -8,8 +8,8 @@ body {
   min-width: 320px;
   min-height: 100vh;
 
-  color: #000000;
-  background-color: #f4f5f7;
+  color: var(--color-black);
+  background-color: var(--color-background);
 
   font-family: Arial, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
 }
