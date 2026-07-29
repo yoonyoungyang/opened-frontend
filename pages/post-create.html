@@ -14,7 +14,7 @@
       data-header
       data-back="true"
       data-back-label="게시글 목록으로 돌아가기"
-      data-profile="button"
+      data-profile="menu"
     ></div>
 
     <main class="main">
@@ -22,6 +22,93 @@
         <h2 class="create-title">게시글 작성</h2>
 
         <form class="create-form">
+          <div class="cinema-ui-post-settings">
+            <div class="cinema-ui-setting-group">
+              <span class="form-label">게시글 유형</span>
+              <div class="cinema-ui-type-options">
+                <label>
+                  <input
+                    type="radio"
+                    name="cinemaPostType"
+                    value="OPEN"
+                    checked
+                  />
+                  <span>예매 오픈</span>
+                </label>
+                <label>
+                  <input type="radio" name="cinemaPostType" value="CANCEL" />
+                  <span>취소표</span>
+                </label>
+                <label>
+                  <input type="radio" name="cinemaPostType" value="SEAT" />
+                  <span>좌석 후기</span>
+                </label>
+                <label>
+                  <input type="radio" name="cinemaPostType" value="QUESTION" />
+                  <span>질문</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="cinema-ui-setting-row">
+              <label class="cinema-ui-setting-field">
+                <span class="form-label">상영관</span>
+                <select>
+                  <option>상영관을 선택하세요</option>
+                  <option>용산 아이파크몰 IMAX</option>
+                  <option>왕십리 IMAX</option>
+                  <option>여의도 4DX</option>
+                  <option>코엑스 Dolby Cinema</option>
+                  <option>월드타워 수퍼플렉스</option>
+                </select>
+              </label>
+
+              <label class="cinema-ui-setting-field">
+                <span class="form-label">영화명</span>
+                <input type="text" placeholder="영화명을 입력하세요" />
+              </label>
+            </div>
+
+            <div class="cinema-ui-extra-fields cinema-ui-extra-open">
+              <label>
+                <span>오픈된 상영 시작일</span>
+                <input type="date" />
+              </label>
+              <label>
+                <span>오픈된 상영 종료일</span>
+                <input type="date" />
+              </label>
+            </div>
+
+            <div class="cinema-ui-extra-fields cinema-ui-extra-cancel">
+              <label>
+                <span>상영 일시</span>
+                <input type="datetime-local" />
+              </label>
+              <label>
+                <span>좌석 정보</span>
+                <input type="text" placeholder="예: G열 12번" />
+              </label>
+            </div>
+
+            <div class="cinema-ui-extra-fields cinema-ui-extra-seat">
+              <label>
+                <span>좌석 정보</span>
+                <input type="text" placeholder="예: F열 중앙" />
+              </label>
+              <label>
+                <span>시야 만족도</span>
+                <select>
+                  <option>★★★★★</option>
+                  <option>★★★★☆</option>
+                  <option>★★★☆☆</option>
+                  <option>★★☆☆☆</option>
+                  <option>★☆☆☆☆</option>
+                </select>
+              </label>
+            </div>
+          </div>
+
           <div class="form-group">
             <label for="post-title" class="form-label">
               제목<span aria-hidden="true">*</span>
@@ -74,6 +161,7 @@
         </form>
       </section>
     </main>
+    <script type="module" src="../js/components/header.js"></script>
     <script type="module" src="../js/pages/post-create.js"></script>
   </body>
 </html>

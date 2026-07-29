@@ -95,15 +95,3 @@ if (userId) {
       }
     });
 }
-
-const profileMenuButton = document.querySelector(".profile-menu-button");
-const profileDropdown = document.querySelector(".profile-dropdown");
-
-profileMenuButton.addEventListener("click", function () {
-  profileDropdown.hidden = !profileDropdown.hidden;
-
-  profileMenuButton.setAttribute(
-    "aria-expanded",
-    String(!profileDropdown.hidden),
-  );
-});

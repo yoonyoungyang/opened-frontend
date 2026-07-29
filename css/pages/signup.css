@@ -6,7 +6,7 @@
 @import url("../components/form.css");
 
 .main {
-  padding: 145px 20px 80px;
+  padding: 52px 20px 80px;
 }
 
 .signup-section {
@@ -14,6 +14,14 @@
   max-width: var(--form-width);
 
   margin: 0 auto;
+
+  padding: 36px 34px 32px;
+
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-large);
+
+  background-color: var(--color-white);
+  box-shadow: var(--shadow-card);
 }
 
 .signup-title {
@@ -21,8 +29,8 @@
 
   text-align: center;
 
-  font-size: 32px;
-  font-weight: 700;
+  font-size: 30px;
+  font-weight: 800;
   line-height: 1.3;
 }
 
@@ -70,7 +78,7 @@
 
   border-radius: 50%;
 
-  border: 1px solid var(--color-border);
+  border: 2px dashed var(--color-border-strong);
 
   background-color: var(--color-white);
 }
@@ -113,7 +121,7 @@
 
 .signup-button {
   width: 100%;
-  height: 40px;
+  height: 46px;
 }
 
 .login-link {
@@ -133,7 +141,11 @@
 
 @media screen and (max-width: 600px) {
   .main {
-    padding: 80px 20px 60px;
+    padding: 28px 16px 60px;
+  }
+
+  .signup-section {
+    padding: 30px 22px 26px;
   }
 
   .signup-title {

@@ -12,17 +12,11 @@ const commentList = document.querySelector(".comment-list");
 const modal = document.querySelector(".modal-overlay");
 const postDeleteButton = document.querySelector(".post-delete-button");
 
-const backButton = document.querySelector(".back-button");
-
 let editingCommentId = null;
 
 const commentForm = document.querySelector(".comment-form");
 const writeCommentContent = document.querySelector(".comment-input");
 const commentSubmitBtn = document.querySelector(".comment-submit-button");
-
-backButton.addEventListener("click", function () {
-  window.location.href = `./posts.html`;
-});
 
 function formattedDate(createdAt) {
   return createdAt.slice(0, 19).replace("T", " ");

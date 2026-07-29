@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>로그인 필요 | 열렸나요</title>
+    <link rel="stylesheet" href="../css/pages/auth-required.css" />
+  </head>
+
+  <body>
+    <div data-header data-profile="none"></div>
+
+    <main class="main">
+      <section class="cinema-ui-auth-required">
+        <span class="cinema-ui-auth-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <rect x="5" y="10" width="14" height="11" rx="2" />
+            <path d="M8 10V7a4 4 0 0 1 8 0v3" />
+          </svg>
+        </span>
+        <h2>로그인이 필요합니다</h2>
+        <p>게시글 작성은 로그인 후 이용할 수 있어요.</p>
+        <a href="./login.html" class="cinema-ui-auth-primary">로그인하기</a>
+        <a href="./posts.html" class="cinema-ui-auth-secondary">
+          게시판으로 돌아가기
+        </a>
+      </section>
+    </main>
+
+    <script type="module" src="../js/components/header.js"></script>
+  </body>
+</html>

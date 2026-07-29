@@ -10,11 +10,6 @@ const post = document.querySelector(".edit-section");
 const params = new URLSearchParams(window.location.search);
 const postId = Number(params.get("postId"));
 
-const backButton = document.querySelector(".back-button");
-backButton.addEventListener("click", function () {
-  window.location.href = `./post-detail.html?postId=${postId}`;
-});
-
 let BeforeTitle = null;
 let BeforeContent = null;
 let AfterTitle = null;
