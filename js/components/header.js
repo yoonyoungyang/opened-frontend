@@ -18,8 +18,9 @@ async function initializeHeader() {
 
   const header = wrapper.firstElementChild;
 
-  configureBackButton(header, headerMount);
+  configureBackButton(header, headerMount); //headerMount: 기존 페이지에 있던 임시 자리, header: 새로 가져온 실제 헤더 요소
   configureProfile(header, headerMount);
+  configureLogout(header, headerMount);
 
   headerMount.replaceWith(header);
 }
@@ -81,3 +82,14 @@ function initializeProfileMenu(profileMenu) {
 initializeHeader().catch((error) => {
   console.error(error);
 });
+
+function configureLogout(header,headerMount) {
+  const logoutBtn = header.querySelector(".logout");
+  if (!logoutBtn) {
+    return;
+  }
+  logoutBtn.addEventListener("click", () => {
+    localStorage.removeItem("access_token");
+    window.location.href = "../pages/login.html";
+  });
+}

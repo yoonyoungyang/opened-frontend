@@ -53,7 +53,7 @@ async function fetchCreatePost() {
 
   if (response.message === "post_create_success") {
     console.log(response);
-    const postId = result.data.post_id;
+    const postId = response.data.post_id;
     window.location.href = `./post-detail.html?postId=${postId}`;
   }
 }
