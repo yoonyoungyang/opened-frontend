@@ -1,0 +1,17 @@
+@import "../../../css/base/reset.css";
+@import "../../../css/base/variables.css";
+@import "../../../css/base/common.css";
+
+.migration-placeholder {
+  display: flex;
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px;
+}
+
+.migration-placeholder p {
+  color: var(--color-muted);
+}
