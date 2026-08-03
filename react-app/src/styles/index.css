@@ -8,10 +8,12 @@
 @import "../../../css/components/post-card.css";
 @import "../../../css/components/comment.css";
 @import "../../../css/components/modal.css";
+@import "../../../css/components/toast.css";
 @import "./pages/auth.css";
 @import "./pages/posts.css";
 @import "./pages/post-detail.css";
 @import "./pages/post-form.css";
+@import "./pages/profile.css";
 
 .migration-placeholder {
   display: flex;

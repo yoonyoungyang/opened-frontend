@@ -1,0 +1,194 @@
+.profile-edit-page {
+  padding: 52px 20px 80px;
+}
+
+.profile-edit-page .profile-edit-section {
+  width: 100%;
+  max-width: var(--form-width);
+  margin: 0 auto;
+  padding: 36px 34px 30px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-large);
+  background-color: var(--color-white);
+  box-shadow: var(--shadow-card);
+}
+
+.profile-edit-page .page-title {
+  margin-bottom: 24px;
+}
+
+.profile-edit-page .profile-edit-form {
+  width: 100%;
+}
+
+.profile-edit-page .form-label {
+  margin-bottom: 10px;
+}
+
+.profile-edit-page .form-group {
+  margin-bottom: 16px;
+}
+
+.profile-edit-page .profile-image-group {
+  margin-bottom: 30px;
+}
+
+.profile-edit-page .profile-label {
+  margin-bottom: 22px;
+}
+
+.profile-edit-page .profile-image-label {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  display: block;
+  overflow: hidden;
+  margin: 0 auto;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.profile-edit-page .profile-image-preview {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border: 3px solid var(--color-white);
+  border-radius: 50%;
+  background-color: var(--color-white);
+  object-fit: cover;
+  box-shadow: 0 0 0 1px var(--color-border);
+}
+
+.profile-edit-page .profile-image-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: var(--color-white);
+  background-color: rgba(0, 0, 0, 0.32);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.profile-edit-page .email-value {
+  min-height: 30px;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+}
+
+.profile-edit-page .nickname-group {
+  margin-bottom: 6px;
+}
+
+.profile-edit-page .helper-text {
+  margin-top: 4px;
+}
+
+.profile-edit-page .edit-button {
+  width: 100%;
+  height: 46px;
+}
+
+.profile-edit-page .withdraw-button {
+  width: 100%;
+  height: 40px;
+  border: none;
+  color: var(--color-muted);
+  background-color: transparent;
+  font-size: 14px;
+}
+
+.profile-edit-page .toast-message,
+.password-edit-page .toast-message {
+  opacity: 0;
+  transform: translate(-50%, 20px);
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
+  pointer-events: none;
+}
+
+.profile-edit-page .toast-message.show,
+.password-edit-page .toast-message.show {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.password-edit-page {
+  min-height: calc(100vh - var(--header-height));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 72px 20px 80px;
+}
+
+.password-edit-page .password-edit-section {
+  width: 100%;
+  max-width: var(--form-width);
+  padding: 38px 34px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-large);
+  background-color: var(--color-white);
+  box-shadow: var(--shadow-card);
+}
+
+.password-edit-page .page-title {
+  margin-bottom: 38px;
+}
+
+.password-edit-page .password-edit-form {
+  width: 100%;
+}
+
+.password-edit-page .form-group {
+  margin-bottom: 8px;
+}
+
+.password-edit-page .helper-text {
+  margin-top: 4px;
+}
+
+.password-edit-page .edit-button {
+  width: 100%;
+  height: 46px;
+  margin-top: 4px;
+}
+
+@media screen and (max-width: 600px) {
+  .profile-edit-page {
+    padding: 28px 16px 60px;
+  }
+
+  .profile-edit-page .profile-edit-section {
+    padding: 30px 22px 26px;
+  }
+
+  .profile-edit-page .profile-image-label {
+    width: 130px;
+    height: 130px;
+  }
+
+  .password-edit-page {
+    min-height: calc(100vh - var(--header-height-mobile));
+    padding: 32px 16px 60px;
+  }
+
+  .password-edit-page .password-edit-section {
+    padding: 32px 22px;
+  }
+
+  .password-edit-page .page-title {
+    margin-bottom: 32px;
+  }
+
+  .profile-edit-page .toast-message,
+  .password-edit-page .toast-message {
+    bottom: 24px;
+    max-width: calc(100% - 40px);
+    padding: 10px 20px;
+    text-align: center;
+  }
+}
