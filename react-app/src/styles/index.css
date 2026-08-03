@@ -1,6 +1,7 @@
 @import "../../../css/base/reset.css";
 @import "../../../css/base/variables.css";
 @import "../../../css/base/common.css";
+@import "../../../css/components/header.css";
 
 .migration-placeholder {
   display: flex;
