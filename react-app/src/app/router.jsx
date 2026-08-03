@@ -2,6 +2,7 @@ import { createBrowserRouter, Navigate } from "react-router-dom";
 
 import AppLayout from "../layout/AppLayout";
 import AuthRequiredPage from "../pages/AuthRequiredPage";
+import ChatPage from "../pages/ChatPage";
 import LoginPage from "../pages/LoginPage";
 import PasswordEditPage from "../pages/PasswordEditPage";
 import PostCreatePage from "../pages/PostCreatePage";
@@ -51,6 +52,11 @@ export const router = createBrowserRouter([
       {
         element: <ProtectedRoute />,
         children: [
+          {
+            path: "chat",
+            element: <ChatPage />,
+            handle: { title: "상영관 채팅", header: { profile: "menu" } },
+          },
           {
             path: "posts/new",
             element: <PostCreatePage />,

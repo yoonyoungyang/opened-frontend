@@ -25,6 +25,9 @@ export default function Header({ showBackButton, backLabel, profile }) {
           <Link to="/posts" className="cinema-ui-header-link">
             게시판
           </Link>
+          <Link to="/chat" className="cinema-ui-header-link">
+            채팅
+          </Link>
         </nav>
 
         {profile === "menu" && <ProfileMenu />}

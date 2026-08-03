@@ -12,6 +12,7 @@
 @import "./pages/auth.css";
 @import "./pages/auth-required.css";
 @import "./pages/posts.css";
+@import "./pages/chat.css";
 @import "./pages/post-detail.css";
 @import "./pages/post-form.css";
 @import "./pages/profile.css";
