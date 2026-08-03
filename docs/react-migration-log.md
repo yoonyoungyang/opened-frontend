@@ -69,3 +69,13 @@
 - **수정한 판단**: 회원가입의 닉네임 검증이나 프로필 이미지 미리보기를 재사용하면 기능이 추가되므로 도입하지 않음
 - **검증 결과**: 비밀번호 검증을 포함한 전체 테스트 10개 통과, production build 성공, Git diff 형식 검사 통과
 - **남은 검증**: 백엔드 실행 상태에서 회원 초기값, 변경 없음 alert, 수정 성공·실패 Toast, 비밀번호 성공·실패와 회원 탈퇴 수동 확인
+
+## 8단계. 전체 연결과 전환 준비
+
+- **작업 범위**: 전체 route·placeholder·정적 경로 검사, AuthRequiredPage 완성, 기존 문서 제목 복원, 프런트·백엔드 테스트와 개발 proxy 확인
+- **AI 제안**: route metadata에 기존 페이지 제목을 함께 선언하고 AppLayout에서 `document.title`을 갱신. 배포 조건은 React 앱 README에 분리
+- **검토 내용**: AuthRequiredPage만 placeholder로 남아 있음을 확인해 기존 정적 마크업과 링크를 JSX로 이전. 알 수 없는 기능이나 404 화면은 새로 추가하지 않음
+- **채택 결과**: 모든 계획 Page가 실제 화면에 연결됐고 `RoutePlaceholder`를 제거. 기존 페이지별 브라우저 제목과 인증 안내 화면을 복원
+- **검증 결과**: 프런트 테스트 10개, production build, 백엔드 테스트 50개 통과. `/posts`, `/posts/3`, `/profile/edit`의 SPA 응답과 `/api/posts` proxy 확인. headless Chrome에서 실제 게시글 3건 렌더링·기존 날짜 형식·페이지 제목을 확인하고, production build의 비로그인 `/profile/edit` 접근이 로그인 화면으로 이동하는 것을 확인
+- **환경 확인**: 별도 백엔드 실행은 기존 Java 프로세스가 H2 파일과 8080 포트를 사용 중이라 실패했으나, 해당 기존 서버의 공개 API는 정상 응답함
+- **남은 검증**: 실제 브라우저에서 인증 계정으로 전체 CRUD, Toast·모달·권한 UI와 반응형 화면을 수동 확인한 뒤 배포 진입점 전환

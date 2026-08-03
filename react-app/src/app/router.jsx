@@ -24,12 +24,13 @@ export const router = createBrowserRouter([
       {
         path: "login",
         element: <LoginPage />,
-        handle: { header: { profile: "none" } },
+        handle: { title: "로그인", header: { profile: "none" } },
       },
       {
         path: "signup",
         element: <SignupPage />,
         handle: {
+          title: "회원가입",
           header: {
             showBackButton: true,
             backLabel: "로그인 페이지로 돌아가기",
@@ -40,12 +41,12 @@ export const router = createBrowserRouter([
       {
         path: "posts",
         element: <PostsPage />,
-        handle: { header: { profile: "menu" } },
+        handle: { title: "게시글 목록", header: { profile: "menu" } },
       },
       {
         path: "auth-required",
         element: <AuthRequiredPage />,
-        handle: { header: { profile: "none" } },
+        handle: { title: "로그인 필요", header: { profile: "none" } },
       },
       {
         element: <ProtectedRoute />,
@@ -54,6 +55,7 @@ export const router = createBrowserRouter([
             path: "posts/new",
             element: <PostCreatePage />,
             handle: {
+              title: "게시글 생성",
               header: {
                 showBackButton: true,
                 backLabel: "게시글 목록으로 돌아가기",
@@ -65,6 +67,7 @@ export const router = createBrowserRouter([
             path: "posts/:postId",
             element: <PostDetailPage />,
             handle: {
+              title: "게시글 상세",
               header: {
                 showBackButton: true,
                 backLabel: "게시글 목록으로 돌아가기",
@@ -76,6 +79,7 @@ export const router = createBrowserRouter([
             path: "posts/:postId/edit",
             element: <PostEditPage />,
             handle: {
+              title: "게시글 수정",
               header: {
                 showBackButton: true,
                 backLabel: "이전 페이지로 돌아가기",
@@ -86,12 +90,18 @@ export const router = createBrowserRouter([
           {
             path: "profile/edit",
             element: <ProfileEditPage />,
-            handle: { header: { profile: "menu" } },
+            handle: {
+              title: "회원 정보 수정",
+              header: { profile: "menu" },
+            },
           },
           {
             path: "profile/password",
             element: <PasswordEditPage />,
-            handle: { header: { profile: "menu" } },
+            handle: {
+              title: "비밀번호 변경",
+              header: { profile: "menu" },
+            },
           },
         ],
       },

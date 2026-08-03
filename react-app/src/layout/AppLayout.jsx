@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Outlet, useMatches } from "react-router-dom";
 
 import Header from "./Header";
@@ -17,6 +18,13 @@ export default function AppLayout() {
     ...DEFAULT_HEADER,
     ...currentMatch?.handle.header,
   };
+  const currentTitle = [...matches]
+    .reverse()
+    .find((match) => match.handle?.title)?.handle.title;
+
+  useEffect(() => {
+    document.title = currentTitle ? `${currentTitle} | 열렸나요` : "열렸나요";
+  }, [currentTitle]);
 
   return (
     <>
