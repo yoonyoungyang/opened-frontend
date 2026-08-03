@@ -424,3 +424,57 @@ Headless Chrome의 DOM 확인만으로는 시각적 동등성과 모든 사용�
 9. 운영 서버의 SPA fallback과 `/api` reverse proxy
 
 위 항목을 통과한 뒤 React 진입점으로 전환하고, 안정화 기간 동안 기존 정적 앱과 이전 배포 산출물을 rollback 용도로 유지한다.
+
+---
+
+## Vanilla 앱과 React 앱의 물리적 분리
+
+### 분리 전 상태
+
+React 소스는 `react-app/`에 있었지만 완전히 독립된 앱은 아니었다. `src/styles/index.css`가 저장소 루트의 `css/base`, `css/components`를 가져오고, 여러 React 컴포넌트가 루트의 `assets/default-profile.png`를 직접 import했다. 이 상태에서는 루트의 Vanilla 파일을 이동하거나 제거하면 React build도 함께 깨진다.
+
+### 검토한 선택지
+
+1. 기존처럼 루트 CSS와 이미지를 두 앱이 공유한다.
+2. 저장소에 `shared/`를 만들고 두 앱이 공통 자산을 참조한다.
+3. Vanilla 앱과 React 앱이 필요한 CSS와 이미지를 각각 소유한다.
+
+공유 구조는 중복을 줄이지만 React 스타일을 개선할 때 비교 기준인 Vanilla 화면까지 바뀔 수 있다. 또한 React 앱만 별도로 배포하거나 저장소에서 떼어낼 때 상위 디렉터리 의존성을 함께 관리해야 한다.
+
+### 결정
+
+Vanilla 코드는 `vanilla-app/`으로 묶고, React가 사용하는 base·component CSS와 기본 프로필 이미지는 `react-app/src/` 내부로 복제했다. 두 앱 사이의 파일 중복은 의도적으로 허용했다. 현재 목적에서는 재사용보다 다음 두 경계를 명확히 하는 것이 더 중요하기 때문이다.
+
+- `vanilla-app/`: 마이그레이션 전 동작을 확인하는 보존본
+- `react-app/`: 독립적으로 개발·검증·배포하는 현재 앱
+
+Vanilla JavaScript에 남아 있던 `/frontend/pages/...` 절대 이동 경로는 새 디렉터리에서 유효하지 않으므로 `../pages/...` 상대 경로로 변경했다. 이동 대상 페이지와 사용자 흐름은 바꾸지 않고, 폴더 위치에 따른 경로만 조정했다.
+
+### 최종 구조
+
+```text
+opened-frontend/
+├── vanilla-app/
+│   ├── pages/
+│   ├── js/
+│   ├── css/
+│   ├── components/
+│   └── assets/
+├── react-app/
+│   ├── src/
+│   │   ├── assets/
+│   │   └── styles/
+│   ├── package.json
+│   └── vite.config.js
+└── docs/
+```
+
+### 검증 결과
+
+- React 소스에서 루트 `css/`, `assets/` 참조가 남아 있지 않음을 검색했다.
+- Vanilla HTML의 stylesheet, script, image 경로가 이동 후 디렉터리 구조와 일치함을 확인했다.
+- Vanilla JavaScript module import 경로가 유지됨을 확인했다.
+- React Node 테스트 10개가 모두 통과했다.
+- React production build가 성공했고 CSS와 기본 프로필 이미지가 build 결과물에 포함됐다.
+
+이 분리로 저장소 루트는 앱 구현 디렉터리가 아니라 두 프런트엔드 버전과 문서를 담는 상위 공간이 됐다. 이후 React 리팩터링은 보존된 Vanilla 화면의 코드와 스타일에 영향을 주지 않는다.

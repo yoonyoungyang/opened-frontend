@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import defaultProfile from "../../../../assets/default-profile.png";
+import defaultProfile from "../../assets/default-profile.png";
 import FormField from "../../shared/components/FormField";
 import {
   validateEmail,

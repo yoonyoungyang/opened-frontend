@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
-import defaultProfile from "../../../assets/default-profile.png";
+import defaultProfile from "../assets/default-profile.png";
 import { clearAccessToken } from "../features/auth/tokenStorage";
 
 export default function ProfileMenu() {

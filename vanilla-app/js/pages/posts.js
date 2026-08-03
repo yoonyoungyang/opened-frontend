@@ -97,10 +97,10 @@ function movetoCreate() {
   const token = localStorage.getItem("access_token");
   if (!token) {
     alert("로그인하셔야 합니다.");
-    window.location.href = "/frontend/pages/login.html";
+    window.location.href = "../pages/login.html";
     return;
   }
-  window.location.href = "/frontend/pages/post-create.html";
+  window.location.href = "../pages/post-create.html";
 }
 
 createPostBtn.addEventListener("click", movetoCreate);

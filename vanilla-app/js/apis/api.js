@@ -2,7 +2,7 @@ export async function authenticatedFetch(url, options = {}) {
   const token = localStorage.getItem("access_token");
 
   if (!token) {
-    window.location.href = "/frontend/pages/login.html";
+    window.location.href = "../pages/login.html";
     return;
   }
 
@@ -18,7 +18,7 @@ export async function authenticatedFetch(url, options = {}) {
 
   if (response.status === 401 || response.status === 403) {
     localStorage.removeItem("access_token");
-    window.location.href = "/frontend/pages/login.html";
+    window.location.href = "../pages/login.html";
     console.log(response);
     return;
   }

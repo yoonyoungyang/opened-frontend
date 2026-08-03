@@ -8,38 +8,41 @@
 
 ```text
 opened-frontend/
-├── pages/
-│   ├── login.html
-│   ├── signup.html
-│   ├── posts.html
-│   ├── post-detail.html
-│   ├── post-create.html
-│   ├── post-edit.html
-│   ├── profile-edit.html
-│   ├── password-edit.html
-│   └── auth-required.html
-├── js/
-│   ├── apis/
-│   │   └── api.js                 # 인증 헤더와 인증 실패 처리
+├── vanilla-app/                    # 마이그레이션 전 정적 앱 보존본
+│   ├── pages/
+│   │   ├── login.html
+│   │   ├── signup.html
+│   │   ├── posts.html
+│   │   ├── post-detail.html
+│   │   ├── post-create.html
+│   │   ├── post-edit.html
+│   │   ├── profile-edit.html
+│   │   ├── password-edit.html
+│   │   └── auth-required.html
+│   ├── js/
+│   │   ├── apis/
+│   │   │   └── api.js             # 인증 헤더와 인증 실패 처리
+│   │   ├── components/
+│   │   │   └── header.js          # 공통 Header 로드와 메뉴 동작
+│   │   └── pages/
+│   │       ├── login.js
+│   │       ├── signup.js
+│   │       ├── posts.js
+│   │       ├── post-detail.js
+│   │       ├── post-create.js
+│   │       ├── post-edit.js
+│   │       ├── profile-edit.js
+│   │       └── password-edit.js
 │   ├── components/
-│   │   └── header.js              # 공통 Header 로드와 메뉴 동작
-│   └── pages/
-│       ├── login.js
-│       ├── signup.js
-│       ├── posts.js
-│       ├── post-detail.js
-│       ├── post-create.js
-│       ├── post-edit.js
-│       ├── profile-edit.js
-│       └── password-edit.js
-├── components/
-│   └── header.html                # 페이지가 fetch해서 사용하는 공통 Header
-├── css/
-│   ├── base/                      # reset, 변수, 공통 스타일
-│   ├── components/                # Header, 폼, 모달, 토스트
-│   └── pages/                     # 페이지별 배치와 표현
-└── assets/
-    └── default-profile.png
+│   │   └── header.html            # 페이지가 fetch해서 사용하는 공통 Header
+│   ├── css/
+│   │   ├── base/                  # reset, 변수, 공통 스타일
+│   │   ├── components/            # Header, 폼, 모달, 토스트
+│   │   └── pages/                 # 페이지별 배치와 표현
+│   └── assets/
+│       └── default-profile.png
+├── react-app/                      # 독립 실행·배포하는 React 앱
+└── docs/                           # 설계와 마이그레이션 기록
 ```
 
 ### 1-2. 페이지 구성
@@ -134,7 +137,7 @@ HTML 로드
 
 ### 2-2. 폴더 구조와 파일별 역할
 
-기존 코드를 보존한 상태에서 비교할 수 있도록 마이그레이션 중에는 `react-app/`을 별도로 운영한다.
+기존 코드는 `vanilla-app/`에 보존하고 React 앱은 `react-app/`에서 독립적으로 운영한다. 두 앱이 CSS나 이미지를 공유하면 한쪽의 변경이 다른 쪽에 영향을 주므로, 공통 파일도 각 앱이 소유한다.
 
 ```text
 react-app/

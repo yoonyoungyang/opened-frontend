@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import defaultProfile from "../../../../assets/default-profile.png";
+import defaultProfile from "../../assets/default-profile.png";
 
 export default function ProfileEditForm({ profile, onSubmit, onWithdraw }) {
   const [nickname, setNickname] = useState(profile.nickname);

@@ -152,7 +152,7 @@ formEl.addEventListener("submit", function (event) {
       .then((response) => response.json())
       .then((result) => {
         if (result.message === "signup_success") {
-          window.location.href = "/frontend/pages/login.html";
+          window.location.href = "../pages/login.html";
         } else {
           result.errors.forEach((error) => {
             const emailHelperTxt = document.querySelector(".email-helper-text");

@@ -37,7 +37,7 @@ async function fetchdeletepost() {
   }
   const result = await response.json();
   if (result.message === "post_delete_success") {
-    window.location.href = "/frontend/pages/posts.html";
+    window.location.href = "../pages/posts.html";
   }
 }
 
@@ -56,7 +56,7 @@ function postDeleteAction() {
 }
 
 function replacetoEditPage() {
-  return (window.location.href = `/frontend/pages/post-edit.html?postId=${postId}`);
+  return (window.location.href = `../pages/post-edit.html?postId=${postId}`);
 }
 
 const postEditButton = document.querySelector(".post-edit-button");

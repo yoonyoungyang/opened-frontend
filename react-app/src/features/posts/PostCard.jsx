@@ -1,4 +1,4 @@
-import defaultProfile from "../../../../assets/default-profile.png";
+import defaultProfile from "../../assets/default-profile.png";
 import { formatDate } from "../../shared/utils/formatDate";
 
 export default function PostCard({ post, onClick }) {
