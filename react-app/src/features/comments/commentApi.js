@@ -9,3 +9,26 @@ export async function getComments(postId) {
 
   return response.data;
 }
+
+export function createComment(postId, content) {
+  return apiRequest(`/posts/${postId}/comments`, {
+    method: "POST",
+    auth: true,
+    body: { content },
+  });
+}
+
+export function updateComment(postId, commentId, content) {
+  return apiRequest(`/posts/${postId}/comments/${commentId}`, {
+    method: "PATCH",
+    auth: true,
+    body: { content },
+  });
+}
+
+export function deleteComment(postId, commentId) {
+  return apiRequest(`/posts/${postId}/comments/${commentId}`, {
+    method: "DELETE",
+    auth: true,
+  });
+}

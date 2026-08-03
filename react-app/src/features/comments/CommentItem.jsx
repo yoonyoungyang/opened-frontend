@@ -1,7 +1,7 @@
 import defaultProfile from "../../../../assets/default-profile.png";
 import { formatDate } from "../../shared/utils/formatDate";
 
-export default function CommentItem({ comment }) {
+export default function CommentItem({ comment, onEdit, onDelete }) {
   return (
     <article className="comment">
       <div className="comment-top">
@@ -24,10 +24,18 @@ export default function CommentItem({ comment }) {
         </div>
         {comment.is_mine && (
           <div className="comment-buttons">
-            <button type="button" className="small-button">
+            <button
+              type="button"
+              className="small-button"
+              onClick={() => onEdit(comment)}
+            >
               수정
             </button>
-            <button type="button" className="small-button">
+            <button
+              type="button"
+              className="small-button"
+              onClick={() => onDelete(comment.comment_id)}
+            >
               삭제
             </button>
           </div>
