@@ -2,6 +2,9 @@
 @import "../../../css/base/variables.css";
 @import "../../../css/base/common.css";
 @import "../../../css/components/header.css";
+@import "../../../css/components/button.css";
+@import "../../../css/components/form.css";
+@import "./pages/auth.css";
 
 .migration-placeholder {
   display: flex;
