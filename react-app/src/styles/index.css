@@ -4,7 +4,12 @@
 @import "../../../css/components/header.css";
 @import "../../../css/components/button.css";
 @import "../../../css/components/form.css";
+@import "../../../css/components/avatar.css";
+@import "../../../css/components/post-card.css";
+@import "../../../css/components/comment.css";
 @import "./pages/auth.css";
+@import "./pages/posts.css";
+@import "./pages/post-detail.css";
 
 .migration-placeholder {
   display: flex;
