@@ -26,7 +26,12 @@ function CommentIcon() {
   );
 }
 
-export default function PostDetail({ post, commentCount }) {
+export default function PostDetail({
+  post,
+  commentCount,
+  onEdit,
+  onDelete,
+}) {
   return (
     <article className="post">
       <header className="post-header">
@@ -45,10 +50,20 @@ export default function PostDetail({ post, commentCount }) {
             </time>
           </div>
           <div className="post-buttons">
-            <button type="button" className="small-button" disabled={!post.is_mine}>
+            <button
+              type="button"
+              className="small-button"
+              disabled={!post.is_mine}
+              onClick={onEdit}
+            >
               수정
             </button>
-            <button type="button" className="small-button" disabled={!post.is_mine}>
+            <button
+              type="button"
+              className="small-button"
+              disabled={!post.is_mine}
+              onClick={onDelete}
+            >
               삭제
             </button>
           </div>

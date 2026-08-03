@@ -7,9 +7,11 @@
 @import "../../../css/components/avatar.css";
 @import "../../../css/components/post-card.css";
 @import "../../../css/components/comment.css";
+@import "../../../css/components/modal.css";
 @import "./pages/auth.css";
 @import "./pages/posts.css";
 @import "./pages/post-detail.css";
+@import "./pages/post-form.css";
 
 .migration-placeholder {
   display: flex;

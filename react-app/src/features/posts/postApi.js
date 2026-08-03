@@ -19,3 +19,26 @@ export async function getPost(postId) {
 
   return response.data;
 }
+
+export function createPost(post) {
+  return apiRequest("/posts", {
+    method: "POST",
+    auth: true,
+    body: post,
+  });
+}
+
+export function updatePost(postId, post) {
+  return apiRequest(`/posts/${postId}`, {
+    method: "PATCH",
+    auth: true,
+    body: post,
+  });
+}
+
+export function deletePost(postId) {
+  return apiRequest(`/posts/${postId}`, {
+    method: "DELETE",
+    auth: true,
+  });
+}
