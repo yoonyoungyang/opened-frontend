@@ -31,6 +31,8 @@ export default function PostDetail({
   commentCount,
   onEdit,
   onDelete,
+  onLike,
+  isLikePending,
 }) {
   return (
     <article className="post">
@@ -76,7 +78,14 @@ export default function PostDetail({
       </section>
 
       <section className="post-statistics" aria-label="게시글 통계">
-        <button type="button" className="statistic-button">
+        <button
+          type="button"
+          className={`statistic-button ${post.is_liked ? "is-liked" : ""}`}
+          onClick={onLike}
+          disabled={isLikePending}
+          aria-pressed={post.is_liked}
+          aria-label={post.is_liked ? "좋아요 취소" : "좋아요"}
+        >
           <HeartIcon />
           <strong>{post.like_count}</strong>
           <span>좋아요</span>

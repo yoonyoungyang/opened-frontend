@@ -6,10 +6,10 @@ import CommentSection from "../features/comments/CommentSection";
 import { deleteComment } from "../features/comments/commentApi";
 import { commentQueries } from "../features/comments/commentQueries";
 import PostDetail from "../features/posts/PostDetail";
-import { deletePost } from "../features/posts/postApi";
 import { postQueries } from "../features/posts/postQueries";
 import ConfirmDialog from "../shared/components/ConfirmDialog";
 import ErrorState from "../shared/components/ErrorState";
+import { createLike, deleteLike, deletePost } from "../features/posts/postApi";
 
 export default function PostDetailPage() {
   const { postId } = useParams();
@@ -26,9 +26,26 @@ export default function PostDetailPage() {
     ...commentQueries.list(numericPostId),
     enabled: isValidPostId && postQuery.isSuccess,
   });
-  const deleteMutation = useMutation({ mutationFn: () => deletePost(numericPostId) });
+  const deleteMutation = useMutation({
+    mutationFn: () => deletePost(numericPostId),
+  });
   const deleteCommentMutation = useMutation({
     mutationFn: (commentId) => deleteComment(numericPostId, commentId),
+  });
+  const createLikeMutation = useMutation({
+    mutationFn: () => createLike(numericPostId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["posts", numericPostId] });
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
+    },
+  });
+
+  const deleteLikeMutation = useMutation({
+    mutationFn: () => deleteLike(numericPostId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["posts", numericPostId] });
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
+    },
   });
 
   async function handleDeletePost() {
@@ -51,6 +68,14 @@ export default function PostDetailPage() {
         queryKey: ["posts", numericPostId, "comments"],
       });
     }
+  }
+
+  async function handleCreateLike() {
+    await createLikeMutation.mutateAsync();
+  }
+
+  async function handleDeleteLike() {
+    await deleteLikeMutation.mutateAsync();
   }
 
   function handleConfirmDelete() {
@@ -76,7 +101,8 @@ export default function PostDetailPage() {
   }
 
   const comments = commentsQuery.data?.comments ?? [];
-  const commentCount = commentsQuery.data?.total_count ?? postQuery.data.comment_count;
+  const commentCount =
+    commentsQuery.data?.total_count ?? postQuery.data.comment_count;
 
   return (
     <main className="main post-detail-page">
@@ -85,6 +111,10 @@ export default function PostDetailPage() {
         commentCount={commentCount}
         onEdit={() => navigate(`/posts/${numericPostId}/edit`)}
         onDelete={() => setDeleteTarget({ type: "post" })}
+        onLike={postQuery.data.is_liked ? handleDeleteLike : handleCreateLike}
+        isLikePending={
+          createLikeMutation.isPending || deleteLikeMutation.isPending
+        }
       />
       <CommentSection
         postId={numericPostId}

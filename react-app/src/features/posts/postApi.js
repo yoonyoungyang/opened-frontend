@@ -42,3 +42,16 @@ export function deletePost(postId) {
     auth: true,
   });
 }
+
+export function createLike(postId) {
+  return apiRequest(`/posts/${postId}/likes`, {
+    method: "POST",
+    auth: true,
+  });
+}
+export function deleteLike(postId) {
+  return apiRequest(`/posts/${postId}/likes`, {
+    method: "DELETE",
+    auth: true,
+  });
+}

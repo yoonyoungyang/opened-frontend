@@ -103,6 +103,19 @@
   color: var(--color-primary);
 }
 
+.post-detail-page .statistic-button.is-liked {
+  color: var(--color-primary);
+}
+
+.post-detail-page .statistic-button.is-liked .cinema-ui-stat-icon {
+  fill: currentcolor;
+}
+
+.post-detail-page .statistic-button:disabled {
+  cursor: wait;
+  opacity: 0.6;
+}
+
 .post-detail-page .statistic-button + .statistic-box,
 .post-detail-page .statistic-box + .statistic-box {
   border-left: 1px solid var(--color-border);
