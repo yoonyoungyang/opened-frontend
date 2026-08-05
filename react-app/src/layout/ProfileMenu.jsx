@@ -9,6 +9,8 @@ export default function ProfileMenu() {
 
   function handleLogout() {
     clearAccessToken();
+    localStorage.removeItem("user_id", response.data.user_id);
+
     setIsOpen(false);
   }
 

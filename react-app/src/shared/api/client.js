@@ -1,4 +1,7 @@
-import { clearAccessToken, getAccessToken } from "../../features/auth/tokenStorage";
+import {
+  clearAccessToken,
+  getAccessToken,
+} from "../../features/auth/tokenStorage";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "/api";
 
@@ -62,15 +65,20 @@ export async function apiRequest(path, options = {}) {
     ...requestOptions,
     headers: requestHeaders,
     body:
-      body === undefined || body instanceof FormData ? body : JSON.stringify(body),
+      body === undefined || body instanceof FormData
+        ? body
+        : JSON.stringify(body),
   });
 
   const responseBody = await parseResponse(response);
 
-  if (response.status === 401 || response.status === 403) {
+  if (response.status === 401) {
     clearAccessToken();
     moveToLogin();
-    throw new ApiError("인증 정보가 유효하지 않습니다.", {
+  }
+
+  if (response.status === 403) {
+    throw new ApiError("이 채팅방에 접근할 권한이 없습니다.", {
       status: response.status,
       body: responseBody,
     });

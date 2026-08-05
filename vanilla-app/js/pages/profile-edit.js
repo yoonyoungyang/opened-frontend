@@ -126,6 +126,8 @@ async function fetchDeleteUser() {
   const result = await response.json();
   if (result.message == "user_delete_success") {
     localStorage.removeItem("access_token");
+    localStorage.removeItem("user_id");
+
     window.location.href = "./login.html";
     console.log(result);
   }

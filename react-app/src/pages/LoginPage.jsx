@@ -18,6 +18,7 @@ export default function LoginPage() {
       }
 
       setAccessToken(response.data.token);
+      localStorage.setItem("user_id", response.data.user_id);
       navigate("/posts");
       return { success: true };
     } catch {

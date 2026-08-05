@@ -44,6 +44,7 @@ export default function ProfileEditPage() {
     if (response.message === "user_delete_success") {
       setIsWithdrawDialogOpen(false);
       clearAccessToken();
+      localStorage.removeItem("user_id", response.data.user_id);
       queryClient.clear();
       navigate("/login");
     }
@@ -73,7 +74,9 @@ export default function ProfileEditPage() {
         />
       )}
 
-      {toast && <Toast message={toast.message} onComplete={handleToastComplete} />}
+      {toast && (
+        <Toast message={toast.message} onComplete={handleToastComplete} />
+      )}
     </main>
   );
 }

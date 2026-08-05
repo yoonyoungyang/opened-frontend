@@ -83,13 +83,14 @@ initializeHeader().catch((error) => {
   console.error(error);
 });
 
-function configureLogout(header,headerMount) {
+function configureLogout(header, headerMount) {
   const logoutBtn = header.querySelector(".logout");
   if (!logoutBtn) {
     return;
   }
   logoutBtn.addEventListener("click", () => {
     localStorage.removeItem("access_token");
+    localStorage.removeItem("user_id");
     window.location.href = "../pages/login.html";
   });
 }
