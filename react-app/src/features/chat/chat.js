@@ -1,11 +1,13 @@
 import { Client } from "@stomp/stompjs";
 import { apiRequest } from "../../shared/api/client";
 
-export function createStompClient(onConnected) {
+export function createStompClient(onConnected, onWebSocketClosed) {
   const token = localStorage.getItem("access_token");
 
   const stompClient = new Client({
     brokerURL: "ws://localhost:8080/ws",
+
+    reconnectDelay: 5000,
 
     onConnect: () => {
       onConnected();
@@ -21,6 +23,11 @@ export function createStompClient(onConnected) {
 
     onWebSocketError: (error) => {
       console.error("WebSocket 오류:", error);
+    },
+
+    onWebSocketClose: () => {
+      console.log("WebSocket 연결 종료 감지");
+      onWebSocketClosed();
     },
   });
   return stompClient;

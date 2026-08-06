@@ -55,10 +55,12 @@ export default function CinemaChat() {
     console.log("클라이언트:", clientRef.current);
     console.log("연결 상태:", clientRef.current?.connected);
 
-    if (clientRef.current && clientRef.current.connected) {
-      sendMessage(clientRef.current, activeRoomId, text);
-      setMessage("");
+    if (!clientRef.current || !clientRef.current.connected) {
+      return;
     }
+
+    sendMessage(clientRef.current, activeRoomId, text);
+    setMessage("");
   }
 
   useEffect(() => {
@@ -100,13 +102,19 @@ export default function CinemaChat() {
       mine: receivedMessage.senderId === loginUserId,
     };
 
-    setMessagesByRoom((current) => ({
-      ...current,
-      [receivedMessage.roomId]: [
-        ...(current[receivedMessage.roomId] ?? []),
-        newMessage,
-      ],
-    }));
+    setMessagesByRoom((current) => {
+      const roomMessages = current[receivedMessage.roomId] ?? [];
+      const isDuplicate = roomMessages.some(
+        (message) => message.id === receivedMessage.messageId,
+      );
+      if (isDuplicate) {
+        return current;
+      }
+      return {
+        ...current,
+        [receivedMessage.roomId]: [...roomMessages, newMessage],
+      };
+    });
 
     console.log("현재 방:", activeRoomId, typeof activeRoomId);
     console.log(
@@ -117,9 +125,14 @@ export default function CinemaChat() {
   }
 
   useEffect(() => {
-    const client = createStompClient(() => {
-      setIsConnected(true);
-    });
+    const client = createStompClient(
+      () => {
+        setIsConnected(true);
+      },
+      () => {
+        setIsConnected(false);
+      },
+    );
 
     clientRef.current = client;
     client.activate();
@@ -156,6 +169,7 @@ export default function CinemaChat() {
     return <p>채팅방을 불러오는 중입니다.</p>;
   }
   console.log("activeRoom:", activeRoom);
+
   return (
     <div className="chat-shell">
       <aside className="chat-room-panel" aria-label="상영관 채팅방 목록">
@@ -240,6 +254,8 @@ export default function CinemaChat() {
           <div ref={messageEndRef} />
         </div>
 
+        {!isConnected && <p>서버와 재 연결 중입니다.</p>}
+
         <form className="chat-composer" onSubmit={handleSubmit}>
           <label htmlFor="chat-message" className="visually-hidden">
             메시지 입력
@@ -254,7 +270,7 @@ export default function CinemaChat() {
           />
           <button
             type="submit"
-            disabled={!message.trim()}
+            disabled={!message.trim() || !isConnected}
             aria-label="메시지 보내기"
           >
             ↑
