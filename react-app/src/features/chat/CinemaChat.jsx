@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, Fragment } from "react";
 import {
   createStompClient,
   sendMessage,
@@ -79,6 +79,7 @@ export default function CinemaChat() {
           text: message.content,
           time: formatMessageTime(new Date(message.sendAt)),
           mine: message.senderId === loginUserId,
+          sendAt: message.sendAt,
         }));
 
         setMessagesByRoom((prev) => ({
@@ -100,6 +101,7 @@ export default function CinemaChat() {
       text: receivedMessage.content,
       time: formatMessageTime(new Date(receivedMessage.sendAt)),
       mine: receivedMessage.senderId === loginUserId,
+      sendAt: receivedMessage.sendAt,
     };
 
     setMessagesByRoom((current) => {
@@ -170,6 +172,44 @@ export default function CinemaChat() {
   }
   console.log("activeRoom:", activeRoom);
 
+  function formattedSendAtDate(sendAt) {
+    const messageDate = new Date(sendAt);
+    const today = new Date();
+    const todayYear = today.getFullYear();
+    const todayMonth = today.getMonth();
+    const todayDate = today.getDate();
+
+    const isToday =
+      messageDate.getFullYear() === todayYear &&
+      messageDate.getMonth() === todayMonth &&
+      messageDate.getDate() === todayDate;
+
+    if (isToday) {
+      return "오늘";
+    }
+
+    const yesterday = new Date(today);
+    yesterday.setDate(today.getDate() - 1);
+
+    const isYesterday =
+      messageDate.getFullYear() === yesterday.getFullYear() &&
+      messageDate.getMonth() === yesterday.getMonth() &&
+      messageDate.getDate() === yesterday.getDate();
+
+    if (isYesterday) {
+      return "어제";
+    }
+    return formatMessageDate(messageDate);
+  }
+
+  function formatMessageDate(date) {
+    return new Intl.DateTimeFormat("ko-KR", {
+      year: "numeric",
+      month: "numeric",
+      day: "numeric",
+    }).format(date);
+  }
+
   return (
     <div className="chat-shell">
       <aside className="chat-room-panel" aria-label="상영관 채팅방 목록">
@@ -222,35 +262,50 @@ export default function CinemaChat() {
         </header>
 
         <div className="chat-message-list" role="log" aria-live="polite">
-          <div className="chat-date-divider">
-            <span>오늘</span>
-          </div>
-          {activeMessages.map((item) =>
-            item.notice ? (
+          {activeMessages.map((item, index) => {
+            const currentDate = new Date(item.sendAt);
+            const previousDate =
+              index === 0 ? null : new Date(activeMessages[index - 1].sendAt);
+            let isSameDate = false;
+            if (previousDate !== null) {
+              isSameDate =
+                currentDate.getFullYear() === previousDate.getFullYear() &&
+                currentDate.getMonth() === previousDate.getMonth() &&
+                currentDate.getDate() === previousDate.getDate();
+            }
+            const shouldShowDate = index === 0 || !isSameDate;
+
+            return item.notice ? (
               <div key={item.id} className="chat-notice">
                 {item.text}
               </div>
             ) : (
-              <article
-                key={item.id}
-                className={`chat-message ${item.mine ? "is-mine" : ""}`}
-              >
-                {!item.mine && (
-                  <div className="chat-message-avatar" aria-hidden="true">
-                    {item.author.charAt(0)}
+              <Fragment key={item.id}>
+                {shouldShowDate && (
+                  <div className="chat-date-divider">
+                    <span>{formattedSendAtDate(item.sendAt)}</span>
                   </div>
                 )}
-                <div className="chat-message-content">
-                  {!item.mine && <strong>{item.author}</strong>}
-                  <div className="chat-message-row">
-                    {item.mine && <time>{item.time}</time>}
-                    <p>{item.text}</p>
-                    {!item.mine && <time>{item.time}</time>}
+                <article
+                  className={`chat-message ${item.mine ? "is-mine" : ""}`}
+                >
+                  {!item.mine && (
+                    <div className="chat-message-avatar" aria-hidden="true">
+                      {item.author.charAt(0)}
+                    </div>
+                  )}
+                  <div className="chat-message-content">
+                    {!item.mine && <strong>{item.author}</strong>}
+                    <div className="chat-message-row">
+                      {item.mine && <time>{item.time}</time>}
+                      <p>{item.text}</p>
+                      {!item.mine && <time>{item.time}</time>}
+                    </div>
                   </div>
-                </div>
-              </article>
-            ),
-          )}
+                </article>
+              </Fragment>
+            );
+          })}
           <div ref={messageEndRef} />
         </div>
 

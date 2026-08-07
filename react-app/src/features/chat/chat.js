@@ -5,8 +5,7 @@ export function createStompClient(onConnected, onWebSocketClosed) {
   const token = localStorage.getItem("access_token");
 
   const stompClient = new Client({
-    brokerURL: "ws://localhost:8080/ws",
-
+    brokerURL: `ws://${window.location.host}/ws`,
     reconnectDelay: 5000,
 
     onConnect: () => {
