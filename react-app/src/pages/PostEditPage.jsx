@@ -50,6 +50,9 @@ export default function PostEditPage() {
           mode="edit"
           initialTitle={postQuery.data.title}
           initialContent={postQuery.data.content}
+          initialCinema={postQuery.data.cinema}
+          initialMovieName={postQuery.data.movie_name}
+          initialPostType={postQuery.data.post_type}
           onSubmit={handleEdit}
         />
       </section>
