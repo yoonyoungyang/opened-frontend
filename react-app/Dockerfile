@@ -9,8 +9,7 @@ RUN npm ci
 
 COPY . .
 
-RUN npm run build -- --mode docker
-
+RUN npm run build
 
 FROM nginx:alpine
 
