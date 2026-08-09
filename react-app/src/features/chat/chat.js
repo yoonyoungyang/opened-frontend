@@ -5,7 +5,7 @@ export function createStompClient(onConnected, onWebSocketClosed) {
   const token = localStorage.getItem("access_token");
 
   const stompClient = new Client({
-    brokerURL: `ws://${window.location.host}/ws`,
+    brokerURL: import.meta.env.VITE_BROKER_BASE_URL,
     reconnectDelay: 5000,
 
     onConnect: () => {
